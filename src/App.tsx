@@ -1,27 +1,31 @@
 import { createRef } from 'react';
 import { Component } from 'react';
 
-interface Person<T> {
-  name: T;
-  height: T;
-  mass: T;
-  hair_color: T;
-  skin_color: T;
-  eye_color: T;
-  birth_year: T;
-  gender: T;
-  homeworld: T[];
-  films: T[];
-  species: T[];
-  vehicles: T[];
-  starships: T[];
-  created: T;
-  edited: T;
-  url: T;
+interface Person {
+  id: number;
+  name: string;
+  status: string;
+  species: string;
+  type: string;
+  gender: string;
+  origin: {
+    name: string;
+    url: string;
+  };
+  location: {
+    name: string;
+    url: string;
+  };
+  image: string;
+  episode: string[];
+  url: string;
+  created: string;
 }
 
+const URL = 'https://rickandmortyapi.com/api/character/';
+
 export default class App extends Component {
-  state: { persons: Person<string>[]; value: string } = {
+  state: { persons: Person[]; value: string } = {
     persons: [],
     value: '',
   };
@@ -36,7 +40,10 @@ export default class App extends Component {
   };
 
   componentDidMount(): void {
-    fetch(`https://swapi.dev/api/people/`).then((responce) =>
+    console.log('маунтинг');
+    const item = JSON.parse(localStorage.getItem('searchItem')!);
+    const apiUrl = item ? `${URL}?name=${item}` : URL;
+    fetch(apiUrl).then((responce) =>
       responce.json().then((data) => {
         console.log(data);
         this.setState((prevState) => ({ ...prevState, persons: data.results }));
@@ -45,12 +52,13 @@ export default class App extends Component {
   }
 
   componentDidUpdate(
-    prevProps: Readonly<object>,
-    prevState: { persons: Person<string>[]; value: string }
+    prevProps: Record<string, never>,
+    prevState: { persons: Person[]; value: string }
   ): void {
+    console.log('обновление');
     if (prevState.value !== this.state.value) {
-      fetch(`https://swapi.dev/api/people/?search=${this.state.value}`).then(
-        (responce) =>
+      fetch(`${URL}?name=${this.state.value}`)
+        .then((responce) =>
           responce.json().then((data) => {
             console.log(data);
             this.setState((prevState) => ({
@@ -58,7 +66,10 @@ export default class App extends Component {
               persons: data.results,
             }));
           })
-      );
+        )
+        .then(() => {
+          localStorage.setItem('searchItem', JSON.stringify(this.state.value));
+        });
     }
   }
 
@@ -71,7 +82,7 @@ export default class App extends Component {
         </form>
         <div>
           {this.state.persons?.map((person) => (
-            <div key={person.name}>{person.name}</div>
+            <div key={person.id}>{person.name}</div>
           ))}
         </div>
       </div>

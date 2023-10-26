@@ -1,5 +1,6 @@
 import { createRef } from 'react';
 import { Component } from 'react';
+import './App.css';
 
 interface Person {
   id: number;
@@ -22,13 +23,20 @@ interface Person {
   created: string;
 }
 
+type AppState = {
+  persons: Person[];
+  value: string;
+  loading: boolean;
+};
 const URL = 'https://rickandmortyapi.com/api/character/';
 
 export default class App extends Component {
-  state: { persons: Person[]; value: string } = {
+  state: AppState = {
     persons: [],
     value: '',
+    loading: false,
   };
+
   inputRef = createRef<HTMLInputElement>();
 
   submitHandler = (event: React.SyntheticEvent) => {
@@ -40,52 +48,60 @@ export default class App extends Component {
   };
 
   componentDidMount(): void {
-    console.log('маунтинг');
     const item = JSON.parse(localStorage.getItem('searchItem')!);
     const apiUrl = item ? `${URL}?name=${item}` : URL;
+    this.setState((prevState) => ({ ...prevState, loading: true }));
     fetch(apiUrl).then((responce) =>
       responce.json().then((data) => {
-        console.log(data);
-        this.setState((prevState) => ({ ...prevState, persons: data.results }));
+        this.setState((prevState) => ({
+          ...prevState,
+          persons: data.results,
+          loading: false,
+        }));
       })
     );
   }
 
   componentDidUpdate(
     prevProps: Record<string, never>,
-    prevState: { persons: Person[]; value: string }
+    prevState: AppState
   ): void {
-    console.log('обновление');
     if (prevState.value !== this.state.value) {
-      fetch(`${URL}?name=${this.state.value}`)
-        .then((responce) =>
-          responce.json().then((data) => {
-            console.log(data);
-            this.setState((prevState) => ({
-              ...prevState,
-              persons: data.results,
-            }));
-          })
-        )
-        .then(() => {
+      this.setState((prevState) => ({ ...prevState, loading: true }));
+      fetch(`${URL}?name=${this.state.value}`).then((responce) =>
+        responce.json().then((data) => {
+          this.setState((prevState) => ({
+            ...prevState,
+            persons: data.results,
+            loading: false,
+          }));
           localStorage.setItem('searchItem', JSON.stringify(this.state.value));
-        });
+        })
+      );
     }
   }
 
   render() {
-    return (
-      <div style={{ marginLeft: '45vw' }}>
-        <form onSubmit={this.submitHandler}>
-          <input ref={this.inputRef} type="search" placeholder="search"></input>
-          <button type="submit">search</button>
-        </form>
+    if (this.state.loading) {
+      return <div className="loading">Loading...</div>;
+    } else {
+      return (
         <div>
-          {this.state.persons?.map((person) => (
-            <div key={person.id}>{person.name}</div>
-          ))}
+          <form onSubmit={this.submitHandler}>
+            <input
+              ref={this.inputRef}
+              type="search"
+              placeholder="search"
+            ></input>
+            <button type="submit">search</button>
+          </form>
+          <div>
+            {this.state.persons?.map((person) => (
+              <div key={person.id}>{person.name}</div>
+            ))}
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }

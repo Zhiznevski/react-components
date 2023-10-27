@@ -27,7 +27,9 @@ type AppState = {
   persons: Person[];
   value: string;
   loading: boolean;
+  error: boolean;
 };
+
 const URL = 'https://rickandmortyapi.com/api/character/';
 
 export default class App extends Component {
@@ -35,6 +37,7 @@ export default class App extends Component {
     persons: [],
     value: '',
     loading: false,
+    error: false,
   };
 
   inputRef = createRef<HTMLInputElement>();
@@ -45,6 +48,10 @@ export default class App extends Component {
     if (target) {
       this.setState((prevState) => ({ ...prevState, value: target.value }));
     }
+  };
+
+  errorHandler = () => {
+    this.setState((prevState) => ({ ...prevState, error: true }));
   };
 
   componentDidMount(): void {
@@ -82,6 +89,9 @@ export default class App extends Component {
   }
 
   render() {
+    if (this.state.error) {
+      throw new Error('I crashed!');
+    }
     if (this.state.loading) {
       return <div className="loading">Loading...</div>;
     } else {
@@ -100,6 +110,7 @@ export default class App extends Component {
               <div key={person.id}>{person.name}</div>
             ))}
           </div>
+          <button onClick={this.errorHandler}>вызвать ошибку</button>
         </div>
       );
     }

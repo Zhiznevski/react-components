@@ -5,6 +5,7 @@ import Person from '../types/Person';
 type CardProps = {
   character: Person;
 };
+
 export default class Card extends Component<CardProps> {
   render() {
     return (

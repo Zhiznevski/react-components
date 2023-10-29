@@ -31,7 +31,7 @@ export default class App extends Component {
 
   componentDidMount(): void {
     const item = JSON.parse(localStorage.getItem('searchItem_key')!);
-    const apiUrl = item ? `${URL}?name=${item}` : URL;
+    const apiUrl = item ? `${URL}?name=${item}` : `${URL}?page=1`;
     this.setState((prevState) => ({ ...prevState, loading: true }));
     fetch(apiUrl).then((responce) =>
       responce.json().then((data) => {
@@ -65,7 +65,6 @@ export default class App extends Component {
       );
     }
   }
-
   render() {
     if (this.state.error) {
       throw new Error('I crashed!');

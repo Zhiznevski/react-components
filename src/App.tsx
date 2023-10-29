@@ -1,34 +1,9 @@
 import { createRef } from 'react';
 import { Component } from 'react';
 import './App.css';
-
-interface Person {
-  id: number;
-  name: string;
-  status: string;
-  species: string;
-  type: string;
-  gender: string;
-  origin: {
-    name: string;
-    url: string;
-  };
-  location: {
-    name: string;
-    url: string;
-  };
-  image: string;
-  episode: string[];
-  url: string;
-  created: string;
-}
-
-type AppState = {
-  persons: Person[];
-  value: string;
-  loading: boolean;
-  error: boolean;
-};
+import Card from './Components/Card';
+import { AppState } from './types/AppState';
+import image from './assets/rickMorty.png';
 
 const URL = 'https://rickandmortyapi.com/api/character/';
 
@@ -55,7 +30,7 @@ export default class App extends Component {
   };
 
   componentDidMount(): void {
-    const item = JSON.parse(localStorage.getItem('searchItem')!);
+    const item = JSON.parse(localStorage.getItem('searchItem_key')!);
     const apiUrl = item ? `${URL}?name=${item}` : URL;
     this.setState((prevState) => ({ ...prevState, loading: true }));
     fetch(apiUrl).then((responce) =>
@@ -82,7 +57,10 @@ export default class App extends Component {
             persons: data.results,
             loading: false,
           }));
-          localStorage.setItem('searchItem', JSON.stringify(this.state.value));
+          localStorage.setItem(
+            'searchItem_key',
+            JSON.stringify(this.state.value)
+          );
         })
       );
     }
@@ -92,27 +70,37 @@ export default class App extends Component {
     if (this.state.error) {
       throw new Error('I crashed!');
     }
-    if (this.state.loading) {
-      return <div className="loading">Loading...</div>;
-    } else {
-      return (
-        <div>
-          <form onSubmit={this.submitHandler}>
+    return (
+      <div className="app-wrapper">
+        <div className="main-logo">
+          <img className="logo" src={image} alt="logo"></img>
+        </div>
+        <div className="control-block">
+          <form className="search-form" onSubmit={this.submitHandler}>
             <input
+              className="search-input"
               ref={this.inputRef}
               type="search"
-              placeholder="search"
+              placeholder="Search by name"
             ></input>
             <button type="submit">search</button>
           </form>
-          <div>
-            {this.state.persons?.map((person) => (
-              <div key={person.id}>{person.name}</div>
-            ))}
-          </div>
-          <button onClick={this.errorHandler}>вызвать ошибку</button>
+          <button onClick={this.errorHandler}>throw an error</button>
         </div>
-      );
-    }
+        {this.state.loading ? (
+          <div className="loading">Loading...</div>
+        ) : (
+          <div className="cards__wrapper">
+            {this.state.persons ? (
+              this.state.persons?.map((person) => (
+                <Card character={person} key={person.id}></Card>
+              ))
+            ) : (
+              <div>No results match your search criteria</div>
+            )}
+          </div>
+        )}
+      </div>
+    );
   }
 }

@@ -1,0 +1,25 @@
+.wrapper {
+  border-radius: 5px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+  max-width: 320px;
+}
+
+.image {
+  width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.body {
+  padding: 20px;
+}
+
+.title {
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.description {
+  text-align: left;
+  color: rgb(108, 105, 105);
+}

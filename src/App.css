@@ -1,0 +1,71 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.loading {
+  width: 100%;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-logo {
+  align-self: center;
+}
+
+.logo {
+  width: 100%;
+}
+.control-block {
+  display: flex;
+  gap: 20px;
+  align-self: center;
+}
+
+.search-form {
+  align-self: center;
+  display: flex;
+  gap: 1em;
+}
+@media (max-width: 600px) {
+  .control-block {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.search-input {
+  width: 240px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #f9f9f9;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #f9f9f9;
+  transition: border-color 0.25s;
+}
+.search-input:hover {
+  border-color: #646cff;
+}
+input:focus,
+input:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.cards__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  justify-content: center;
+}

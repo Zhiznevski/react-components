@@ -1,25 +1,21 @@
-import { createRef, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Card from './Components/Card';
 import image from './assets/rickMorty.png';
 import Person from './types/Person';
-
-const URL = 'https://rickandmortyapi.com/api/character/';
+import { getCharacters } from './api/api';
+import SearchBar from './Components/SearchBar';
 
 const App: React.FC = () => {
+  const item = JSON.parse(localStorage.getItem('searchItem_key')!);
   const [persons, setPersons] = useState<Person[] | null>(null);
-  const [searchValue, setSearchValue] = useState('');
+  const [submitValue, setSubmitValue] = useState<string>(item);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(item);
 
-  const inputRef = createRef<HTMLInputElement>();
-
-  const submitHandler = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    const target = inputRef.current;
-    if (target) {
-      setSearchValue(target.value);
-    }
+  const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
 
   const errorHandler = () => {
@@ -27,27 +23,16 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    const item = JSON.parse(localStorage.getItem('searchItem_key')!);
-    const apiUrl = item ? `${URL}?name=${item}` : `${URL}?page=1`;
-    setLoading(true);
-    fetch(apiUrl).then((responce) =>
-      responce.json().then((data) => {
+    const fetchData = async () => {
+      setLoading(true);
+      const data = await getCharacters(submitValue);
+      if (data) {
         setPersons(data.results);
         setLoading(false);
-      })
-    );
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${URL}?name=${searchValue}`).then((responce) =>
-      responce.json().then((data) => {
-        setPersons(data.results);
-        setLoading(false);
-      })
-    );
-    localStorage.setItem('searchItem_key', JSON.stringify(searchValue));
-  }, [searchValue]);
+      }
+    };
+    fetchData();
+  }, [submitValue]);
 
   if (error) {
     throw new Error('I crashed!');
@@ -58,22 +43,18 @@ const App: React.FC = () => {
         <img className="logo" src={image} alt="logo"></img>
       </div>
       <div className="control-block">
-        <form className="search-form" onSubmit={submitHandler}>
-          <input
-            className="search-input"
-            ref={inputRef}
-            type="search"
-            placeholder="Search by name"
-          ></input>
-          <button type="submit">search</button>
-        </form>
+        <SearchBar
+          inputHandler={inputHandler}
+          searchTerm={searchTerm}
+          setSubmitValue={setSubmitValue}
+        />
         <button onClick={errorHandler}>throw an error</button>
       </div>
       {loading ? (
-        <div className="loading">Loading...</div>
+        <span className="loader"></span>
       ) : (
         <div className="cards__wrapper">
-          {persons ? (
+          {persons?.length ? (
             persons?.map((person) => (
               <Card character={person} key={person.id}></Card>
             ))

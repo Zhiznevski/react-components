@@ -7,6 +7,7 @@ import { getCharacters } from './api/api';
 import SearchBar from './Components/SearchBar';
 import Pagination from './Components/Pagination/Pagination';
 import { Outlet, useSearchParams } from 'react-router-dom';
+import DropDown from './Components/DropDown/DropDown';
 
 const App: React.FC = () => {
   const item = JSON.parse(localStorage.getItem('searchItem_key')!) || '';
@@ -16,6 +17,8 @@ const App: React.FC = () => {
   const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState(item);
   const [pageCount, setPageCount] = useState<number | null>(null);
+  const [limit, setLimit] = useState<number>(20);
+  console.log(limit);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get('page') || '1';
@@ -46,7 +49,7 @@ const App: React.FC = () => {
       }
     };
     fetchData();
-  }, [submitValue, page]);
+  }, [submitValue, page, limit]);
 
   if (error) {
     throw new Error('I crashed!');
@@ -64,6 +67,7 @@ const App: React.FC = () => {
           setSubmitValue={setSubmitValue}
         />
         <button onClick={errorHandler}>throw an error</button>
+        <DropDown limit={limit} setLimit={setLimit} />
       </div>
       <div className="main-block">
         {loading ? (
@@ -72,7 +76,7 @@ const App: React.FC = () => {
           <div className="cards__wrapper">
             {details && <div className="hidden" onClick={closeDetails}></div>}
             {persons?.length ? (
-              persons?.map((person) => (
+              persons?.slice(0, limit).map((person) => (
                 <div
                   style={{ transition: '.3s' }}
                   key={person.id}

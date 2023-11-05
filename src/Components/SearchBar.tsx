@@ -25,6 +25,7 @@ const SearchBar: React.FC<Props> = ({
   return (
     <form className="search-form" onSubmit={submitHandler}>
       <input
+        id="form-input"
         className="search-input"
         type="search"
         placeholder="Search by name"

@@ -18,13 +18,10 @@ const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState(item);
   const [pageCount, setPageCount] = useState<number | null>(null);
   const [limit, setLimit] = useState<number>(20);
-  console.log(limit);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get('page') || '1';
   const details = searchParams.get('details');
-
-  console.log('searchParams', searchParams);
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -45,7 +42,9 @@ const App: React.FC = () => {
       if (data) {
         setPersons(data.results);
         setLoading(false);
-        if (data.info.pages) setPageCount(data.info.pages);
+        if (data.info.pages) {
+          setPageCount(data.info.pages);
+        }
       }
     };
     fetchData();
@@ -67,7 +66,11 @@ const App: React.FC = () => {
           setSubmitValue={setSubmitValue}
         />
         <button onClick={errorHandler}>throw an error</button>
-        <DropDown limit={limit} setLimit={setLimit} />
+        <DropDown
+          limit={limit}
+          setLimit={setLimit}
+          setSearchParams={setSearchParams}
+        />
       </div>
       <div className="main-block">
         {loading ? (

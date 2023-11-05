@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { HOME_ROUTE } from '../Constants/constants';
+import { HOME_ROUTE } from '../../Constants/constants';
+import styles from './SearchBar.module.css';
 
 type Props = {
   searchTerm: string;
@@ -23,10 +24,10 @@ const SearchBar: React.FC<Props> = ({
   };
 
   return (
-    <form className="search-form" onSubmit={submitHandler}>
+    <form className={styles.searchForm} onSubmit={submitHandler}>
       <input
         id="form-input"
-        className="search-input"
+        className={styles.searchInput}
         type="search"
         placeholder="Search by name"
         value={searchTerm}

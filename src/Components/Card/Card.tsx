@@ -1,5 +1,5 @@
 import styles from './Card.module.css';
-import Person from '../types/Person';
+import Person from '../../types/Person';
 
 type CardProps = {
   character: Person;

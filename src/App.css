@@ -32,32 +32,13 @@
   align-self: center;
 }
 
-.search-form {
-  align-self: center;
-  display: flex;
-  gap: 1em;
-}
 @media (max-width: 600px) {
   .control-block {
     flex-direction: column;
     align-items: center;
   }
 }
-.search-input {
-  width: 240px;
-  text-align: center;
-  border-radius: 8px;
-  border: 1px solid #f9f9f9;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #f9f9f9;
-  transition: border-color 0.25s;
-}
-.search-input:hover {
-  border-color: #646cff;
-}
+
 input:focus,
 input:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;

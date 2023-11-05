@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import Card from './Components/Card';
+import Card from './Components/Card/Card';
 import image from './assets/rickMorty.png';
 import Person from './types/Person';
 import { getCharacters } from './api/api';
-import SearchBar from './Components/SearchBar';
+import SearchBar from './Components/SearchBar/SearchBar';
 import Pagination from './Components/Pagination/Pagination';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import DropDown from './Components/DropDown/DropDown';
 
 const App: React.FC = () => {
-  const item = JSON.parse(localStorage.getItem('searchItem_key')!) || '';
+  const item: string =
+    JSON.parse(localStorage.getItem('searchItem_key')!) || '';
   const [persons, setPersons] = useState<Person[] | null>(null);
   const [submitValue, setSubmitValue] = useState<string>(item);
   const [loading, setLoading] = useState(false);
@@ -37,14 +38,18 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      const data = await getCharacters(submitValue, page);
-      if (data) {
-        setPersons(data.results);
-        setLoading(false);
-        if (data.info.pages) {
-          setPageCount(data.info.pages);
+      try {
+        setLoading(true);
+        const data = await getCharacters(submitValue, page);
+        if (data) {
+          setPersons(data.results);
+          setLoading(false);
+          if (data.info.pages) {
+            setPageCount(data.info.pages);
+          }
         }
+      } catch {
+        console.error();
       }
     };
     fetchData();

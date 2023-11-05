@@ -13,11 +13,15 @@ const DetailedCard: React.FC = () => {
     useOutletContext();
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      const res = await fetch(`${API_URL}/${details}`);
-      const data: Person = await res.json();
-      setPerson(data);
-      setLoading(false);
+      try {
+        setLoading(true);
+        const res = await fetch(`${API_URL}/${details}`);
+        const data: Person = await res.json();
+        setPerson(data);
+        setLoading(false);
+      } catch {
+        console.error();
+      }
     };
     fetchData();
   }, [details]);

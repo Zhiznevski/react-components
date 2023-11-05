@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { HOME_ROUTE } from '../Constants/constants';
-import App from '../App';
-import DetailedCard from './DetailedCard.tsx/DetailedCard';
+import { HOME_ROUTE } from '../../Constants/constants';
+import App from '../../App';
+import DetailedCard from '../DetailedCard.tsx/DetailedCard';
 
 const Router = createBrowserRouter([
   {

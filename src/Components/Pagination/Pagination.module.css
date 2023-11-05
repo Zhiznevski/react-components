@@ -1,0 +1,44 @@
+.list {
+  display: flex;
+  list-style-type: none;
+  gap: 5px;
+  align-self: center;
+}
+
+.active {
+  font-size: 0.9rem;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  padding-top: 2px;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  color: #1976d2;
+  border: 1px solid rgba(25, 118, 210, 0.5);
+  border-radius: 50%;
+  background-color: rgba(25, 118, 210, 0.12);
+}
+
+.active:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.pageNumber {
+  font-size: 0.9rem;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  padding-top: 2px;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  transition: 0.3s;
+}
+
+.pageNumber:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}

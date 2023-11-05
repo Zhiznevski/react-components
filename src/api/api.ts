@@ -10,11 +10,17 @@ type Responce = {
   };
   results: Person[];
 };
-export const getCharacters = async (searchValue: string) => {
-  const apiURL = searchValue ? `${API_URL}?name=${searchValue}` : API_URL;
+export const getCharacters = async (
+  searchValue: string,
+  page: string | null = '1'
+) => {
+  const apiURL = searchValue
+    ? `${API_URL}?page=${page}&name=${searchValue}`
+    : `${API_URL}?page=${page}`;
   try {
     const res = await fetch(apiURL);
     const data: Promise<Responce> = await res.json();
+    console.log(data);
     return data;
   } catch {
     console.error();

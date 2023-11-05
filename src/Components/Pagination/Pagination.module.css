@@ -1,0 +1,16 @@
+.list {
+  display: flex;
+  list-style-type: none;
+  gap: 1em;
+  align-self: center;
+}
+
+.active {
+  cursor: pointer;
+  color: #646cff;
+  text-decoration: underline;
+}
+
+.pageNumber {
+  cursor: pointer;
+}

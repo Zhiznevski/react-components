@@ -24,7 +24,7 @@
 }
 
 .logo {
-  width: 100%;
+  width: 50%;
 }
 .control-block {
   display: flex;
@@ -87,6 +87,11 @@ input:focus-visible {
   border-radius: 50%;
   border: 5px solid black;
   animation: prixClipFix 2s linear infinite;
+}
+
+.main-block {
+  display: flex;
+  align-items: flex-start;
 }
 
 @keyframes rotate {

@@ -20,7 +20,6 @@ export const getCharacters = async (
   try {
     const res = await fetch(apiURL);
     const data: Promise<Responce> = await res.json();
-    console.log(data);
     return data;
   } catch {
     console.error();

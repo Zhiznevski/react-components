@@ -23,3 +23,12 @@
   text-align: left;
   color: rgb(108, 105, 105);
 }
+
+@media (max-width: 680px) {
+  .wrapper {
+    max-width: 200px;
+  }
+  .imageWrapper {
+    max-width: 200px;
+  }
+}

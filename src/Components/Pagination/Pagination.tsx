@@ -5,17 +5,11 @@ import './../../App.css';
 type Props = {
   pageCount: number | null;
   setSearchParams: SetURLSearchParams;
-  currentPage: string | null;
-  searchParams: URLSearchParams;
+  page: string | null;
   details: string | null;
 };
 
-const Pagination: React.FC<Props> = ({
-  pageCount,
-  setSearchParams,
-  currentPage,
-  searchParams,
-}) => {
+const Pagination: React.FC<Props> = ({ pageCount, setSearchParams, page }) => {
   const pageNumbers = [];
 
   if (pageCount) {
@@ -25,20 +19,21 @@ const Pagination: React.FC<Props> = ({
   }
   return (
     <ul className={styles.list}>
-      {pageNumbers.map((page) => (
-        <li key={page}>
-          <span
+      {pageNumbers.slice(0, 10).map((pageNumber) => (
+        <li key={pageNumber}>
+          <div
             className={
-              currentPage && page === +currentPage
-                ? styles.active
-                : styles.pageNumber
+              page && pageNumber === +page ? styles.active : styles.pageNumber
             }
             onClick={() => {
-              setSearchParams({ ...searchParams, page: page.toString() });
+              setSearchParams((prev) => ({
+                ...prev,
+                page: pageNumber.toString(),
+              }));
             }}
           >
-            {page}
-          </span>
+            {pageNumber}
+          </div>
         </li>
       ))}
     </ul>

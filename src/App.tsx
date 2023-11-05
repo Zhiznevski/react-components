@@ -18,11 +18,10 @@ const App: React.FC = () => {
   const [pageCount, setPageCount] = useState<number | null>(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = searchParams.get('page');
+  const page = searchParams.get('page') || '1';
   const details = searchParams.get('details');
 
-  console.log(page);
-  console.log(details);
+  console.log('searchParams', searchParams);
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -30,6 +29,10 @@ const App: React.FC = () => {
 
   const errorHandler = () => {
     setError(true);
+  };
+
+  const closeDetails = () => {
+    setSearchParams({ page: page });
   };
 
   useEffect(() => {
@@ -67,15 +70,18 @@ const App: React.FC = () => {
           <span className="loader"></span>
         ) : (
           <div className="cards__wrapper">
+            {details && <div className="hidden" onClick={closeDetails}></div>}
             {persons?.length ? (
               persons?.map((person) => (
                 <div
+                  style={{ transition: '.3s' }}
                   key={person.id}
                   onClick={() =>
-                    setSearchParams({
-                      ...searchParams,
+                    setSearchParams((prev) => ({
+                      ...prev,
+                      page: page,
                       details: person.id.toString(),
-                    })
+                    }))
                   }
                 >
                   <Card character={person} key={person.id}></Card>
@@ -86,11 +92,10 @@ const App: React.FC = () => {
             )}
           </div>
         )}
-        {details && <Outlet context={details} />}
+        {details && <Outlet context={[details, page, setSearchParams]} />}
       </div>
       <Pagination
-        searchParams={searchParams}
-        currentPage={page}
+        page={page}
         details={details}
         setSearchParams={setSearchParams}
         pageCount={pageCount}

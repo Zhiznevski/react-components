@@ -2,24 +2,21 @@ import { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HOME_ROUTE } from '../../Constants/constants';
 import styles from './SearchBar.module.css';
+import { useData } from '../../hooks/useData';
 
 type Props = {
   searchTerm: string;
   inputHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  setSubmitValue: Dispatch<SetStateAction<string>>;
   setPageCount: Dispatch<SetStateAction<number | null>>;
 };
 
-const SearchBar: React.FC<Props> = ({
-  searchTerm,
-  inputHandler,
-  setSubmitValue,
-}) => {
+const SearchBar: React.FC<Props> = ({ searchTerm, inputHandler }) => {
+  const { setSearchValue } = useData();
   const navigate = useNavigate();
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     navigate(HOME_ROUTE);
     event.preventDefault();
-    setSubmitValue(searchTerm);
+    setSearchValue(searchTerm);
     localStorage.setItem('searchItem_key', JSON.stringify(searchTerm));
   };
 

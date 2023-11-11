@@ -10,13 +10,10 @@ import { useData } from './hooks/useData';
 import CardList from './Components/CardList/CardList';
 
 const App: React.FC = () => {
-  const item: string =
-    JSON.parse(localStorage.getItem('searchItem_key')!) || '';
-  const { setPersons } = useData();
-  const [submitValue, setSubmitValue] = useState<string>(item);
+  const { setPersons, searchValue } = useData();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(item);
+  const [searchTerm, setSearchTerm] = useState(searchValue);
   const [pageCount, setPageCount] = useState<number | null>(null);
   const [limit, setLimit] = useState<number>(20);
 
@@ -40,7 +37,7 @@ const App: React.FC = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await getCharacters(submitValue, page);
+        const data = await getCharacters(searchValue, page);
         if (data) {
           setPersons(data.results);
           setLoading(false);
@@ -53,7 +50,7 @@ const App: React.FC = () => {
       }
     };
     fetchData();
-  }, [submitValue, page, limit, setPersons]);
+  }, [searchValue, page, limit, setPersons]);
 
   if (error) {
     throw new Error('I crashed!');
@@ -68,7 +65,6 @@ const App: React.FC = () => {
           setPageCount={setPageCount}
           inputHandler={inputHandler}
           searchTerm={searchTerm}
-          setSubmitValue={setSubmitValue}
         />
         <button onClick={errorHandler}>throw an error</button>
         <DropDown

@@ -8,13 +8,15 @@ export interface AppContextType {
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
+const item: string = JSON.parse(localStorage.getItem('searchItem_key')!) || '';
+
 export const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [persons, setPersons] = useState<Person[] | null>(null);
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>(item);
   return (
     <AppContext.Provider
       value={{ persons, setPersons, searchValue, setSearchValue }}

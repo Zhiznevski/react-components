@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import Card from './Components/Card/Card';
 import image from './assets/rickMorty.png';
 import { getCharacters } from './api/api';
 import SearchBar from './Components/SearchBar/SearchBar';
@@ -8,11 +7,12 @@ import Pagination from './Components/Pagination/Pagination';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import DropDown from './Components/DropDown/DropDown';
 import { useData } from './hooks/useData';
+import CardList from './Components/CardList/CardList';
 
 const App: React.FC = () => {
   const item: string =
     JSON.parse(localStorage.getItem('searchItem_key')!) || '';
-  const { persons, setPersons } = useData();
+  const { setPersons } = useData();
   const [submitValue, setSubmitValue] = useState<string>(item);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -83,25 +83,11 @@ const App: React.FC = () => {
         ) : (
           <div className="cards__wrapper">
             {details && <div className="hidden" onClick={closeDetails}></div>}
-            {persons?.length ? (
-              persons?.slice(0, limit).map((person) => (
-                <div
-                  style={{ transition: '.3s' }}
-                  key={person.id}
-                  onClick={() =>
-                    setSearchParams((prev) => ({
-                      ...prev,
-                      page: page,
-                      details: person.id.toString(),
-                    }))
-                  }
-                >
-                  <Card character={person} key={person.id}></Card>
-                </div>
-              ))
-            ) : (
-              <div>No results match your search criteria</div>
-            )}
+            <CardList
+              limit={limit}
+              page={page}
+              setSearchParams={setSearchParams}
+            />
           </div>
         )}
         {details && <Outlet context={[details, page, setSearchParams]} />}

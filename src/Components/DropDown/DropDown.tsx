@@ -9,7 +9,7 @@ type Props = {
 };
 
 const DropDown: React.FC<Props> = ({ limit, setLimit, setSearchParams }) => {
-  const limits = [5, 10, 20];
+  const limits = [6, 12, 20];
   const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     setLimit(+value);

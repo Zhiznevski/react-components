@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import Card from './Components/Card/Card';
 import image from './assets/rickMorty.png';
-import Person from './types/Person';
 import { getCharacters } from './api/api';
 import SearchBar from './Components/SearchBar/SearchBar';
 import Pagination from './Components/Pagination/Pagination';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import DropDown from './Components/DropDown/DropDown';
+import { useData } from './hooks/useData';
 
 const App: React.FC = () => {
   const item: string =
     JSON.parse(localStorage.getItem('searchItem_key')!) || '';
-  const [persons, setPersons] = useState<Person[] | null>(null);
+  const { persons, setPersons } = useData();
   const [submitValue, setSubmitValue] = useState<string>(item);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -53,7 +53,7 @@ const App: React.FC = () => {
       }
     };
     fetchData();
-  }, [submitValue, page, limit]);
+  }, [submitValue, page, limit, setPersons]);
 
   if (error) {
     throw new Error('I crashed!');

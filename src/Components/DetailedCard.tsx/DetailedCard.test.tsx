@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { Mock, describe, expect, it } from 'vitest';
 import { MemoryRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { AppContext } from '../../Context/AppContext';
@@ -36,9 +42,11 @@ describe('Tests for the DetailedCard component', () => {
       </MemoryRouter>
     );
     const card = await screen.findAllByTestId('card');
-    fireEvent.click(card[0]);
+    act(() => {
+      fireEvent.click(card[0]);
+    });
 
-    expect(screen.getByTestId('loader')).toBeInTheDocument();
+    waitFor(() => expect(screen.getByTestId('loader')).toBeInTheDocument());
   });
   it('Make sure the detailed card component correctly displays the detailed card data', async () => {
     render(
@@ -71,7 +79,9 @@ describe('Tests for the DetailedCard component', () => {
       </MemoryRouter>
     );
     const closeBtn = await screen.findByAltText('close-button');
-    fireEvent.click(closeBtn);
+    act(() => {
+      fireEvent.click(closeBtn);
+    });
     waitFor(() => expect(screen.getByTestId('details')).toBeInTheDocument());
   });
 });

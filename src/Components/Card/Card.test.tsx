@@ -50,7 +50,6 @@ describe('Tests for the Card component', () => {
               <Route path="/" element={<DetailedCard />} />
             </Route>
           </Routes>
-          <App />
         </AppContext.Provider>
       </MemoryRouter>
     );

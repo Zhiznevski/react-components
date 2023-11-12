@@ -2,12 +2,13 @@ import { createBrowserRouter } from 'react-router-dom';
 import { HOME_ROUTE } from '../../Constants/constants';
 import App from '../../App';
 import DetailedCard from '../DetailedCard.tsx/DetailedCard';
+import ErrorPage from '../ErrorPage/ErrorPage';
 
 const Router = createBrowserRouter([
   {
     path: HOME_ROUTE,
     element: <App />,
-    errorElement: <div>Error</div>,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,

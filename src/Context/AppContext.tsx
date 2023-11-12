@@ -10,7 +10,7 @@ export interface AppContextType {
 
 const item: string = JSON.parse(localStorage.getItem('searchItem_key')!) || '';
 
-export const AppContext = createContext<AppContextType | undefined>(undefined);
+export const AppContext = createContext<AppContextType | null>(null);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { HOME_ROUTE } from '../../Constants/constants';
 import styles from './SearchBar.module.css';
 import { useData } from '../../hooks/useData';
+import { AppContextType } from '../../Context/AppContext';
 
 type Props = {
   searchTerm: string;
@@ -11,7 +12,7 @@ type Props = {
 };
 
 const SearchBar: React.FC<Props> = ({ searchTerm, inputHandler }) => {
-  const { setSearchValue } = useData();
+  const { setSearchValue } = useData() as AppContextType;
   const navigate = useNavigate();
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     navigate(HOME_ROUTE);

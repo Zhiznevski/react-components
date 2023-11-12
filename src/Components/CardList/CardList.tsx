@@ -1,3 +1,4 @@
+import { AppContextType } from '../../Context/AppContext';
 import { useData } from '../../hooks/useData';
 import Card from '../Card/Card';
 
@@ -14,13 +15,14 @@ const CardList: React.FC<CardListProps> = ({
   page,
   setSearchParams,
 }) => {
-  const { persons } = useData();
+  const { persons } = useData() as AppContextType;
 
   return (
     <>
       {persons?.length ? (
         persons?.slice(0, limit).map((person) => (
           <div
+            className="card"
             style={{ transition: '.3s' }}
             key={person.id}
             onClick={() =>

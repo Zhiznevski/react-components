@@ -20,22 +20,16 @@ const CardList: React.FC<CardListProps> = ({
   return (
     <>
       {persons?.length ? (
-        persons?.slice(0, limit).map((person) => (
-          <div
-            className="card"
-            style={{ transition: '.3s' }}
-            key={person.id}
-            onClick={() =>
-              setSearchParams((prev) => ({
-                ...prev,
-                page: page,
-                details: person.id.toString(),
-              }))
-            }
-          >
-            <Card character={person} key={person.id}></Card>
-          </div>
-        ))
+        persons
+          ?.slice(0, limit)
+          .map((person) => (
+            <Card
+              character={person}
+              page={page}
+              setSearchParams={setSearchParams}
+              key={person.id}
+            ></Card>
+          ))
       ) : (
         <div>No results match your search criteria</div>
       )}

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import Person from '../../types/Person';
 import styles from './DetailedCard.module.css';
-import { API_URL } from '../../Constants/constants';
 import { SetURLSearchParams, useOutletContext } from 'react-router-dom';
 import './../../App.css';
 import icon from './../../assets/close_btn.svg';
+import { getCharacter } from '../../api/api';
 
 const DetailedCard: React.FC = () => {
   const [person, setPerson] = useState<Person | null>(null);
@@ -15,10 +15,11 @@ const DetailedCard: React.FC = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${API_URL}/${details}`);
-        const data: Person = await res.json();
-        setPerson(data);
-        setLoading(false);
+        const res = await getCharacter(details);
+        if (res) {
+          setPerson(res);
+          setLoading(false);
+        }
       } catch {
         console.error();
       }
@@ -33,7 +34,7 @@ const DetailedCard: React.FC = () => {
     );
   }
   return (
-    <div className={styles.wrapper}>
+    <div data-testid="details" className={styles.wrapper}>
       <img
         src={icon}
         alt="close-button"

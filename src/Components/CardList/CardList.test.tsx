@@ -3,9 +3,9 @@ import { describe, expect, it } from 'vitest';
 import CardList from './CardList';
 import { MemoryRouter } from 'react-router-dom';
 import { AppContext } from '../../Context/AppContext';
-import { CHARACTERS } from '../../data/Characters';
+import { CHARACTERS } from '../../mockData/Characters';
 
-const limit = 3,
+const limit = 20,
   page = '1',
   setSearchParams = () => {};
 

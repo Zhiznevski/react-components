@@ -8,9 +8,10 @@ import { Outlet, useSearchParams } from 'react-router-dom';
 import DropDown from './Components/DropDown/DropDown';
 import { useData } from './hooks/useData';
 import CardList from './Components/CardList/CardList';
+import { AppContextType } from './Context/AppContext';
 
 const App: React.FC = () => {
-  const { setPersons, searchValue } = useData();
+  const { setPersons, searchValue } = useData() as AppContextType;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState(searchValue);

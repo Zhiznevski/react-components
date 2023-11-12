@@ -25,3 +25,13 @@ export const getCharacters = async (
     console.error();
   }
 };
+
+export const getCharacter = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/${id}`);
+    const data: Promise<Person> = await res.json();
+    return data;
+  } catch {
+    console.error();
+  }
+};

@@ -29,7 +29,7 @@ const DetailedCard: React.FC = () => {
   if (loading) {
     return (
       <div className={styles.loaderWrapper}>
-        <div className="loader"></div>
+        <div data-testid="loader" className="loader"></div>
       </div>
     );
   }

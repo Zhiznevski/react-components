@@ -52,6 +52,6 @@ describe('Tests for the Card List component', () => {
 
     expect(
       screen.getByText('No results match your search criteria')
-    ).toBeDefined();
+    ).toBeInTheDocument();
   });
 });

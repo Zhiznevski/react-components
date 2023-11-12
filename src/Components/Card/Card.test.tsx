@@ -35,8 +35,10 @@ describe('Tests for the Card component', () => {
         </AppContext.Provider>
       </MemoryRouter>
     );
-    expect(screen.getByRole('heading', { name: 'Morty Smith' })).toBeDefined();
-    expect(screen.getByText('Male')).toBeDefined();
+    expect(
+      screen.getByRole('heading', { name: 'Morty Smith' })
+    ).toBeInTheDocument();
+    expect(screen.getByText('Male')).toBeInTheDocument();
   });
 
   it('clicking on a card opens a detailed card component', async () => {
@@ -56,7 +58,7 @@ describe('Tests for the Card component', () => {
     fireEvent.click(card[0]);
 
     const detailsCard = await screen.findAllByTestId('details');
-    expect(detailsCard[0]).toBeDefined();
+    expect(detailsCard[0]).toBeInTheDocument();
   });
 
   it('Check that clicking triggers an additional API call to fetch detailed information', async () => {
@@ -66,7 +68,7 @@ describe('Tests for the Card component', () => {
           <Card
             setSearchParams={setSearchParams}
             page={page}
-            character={CHARACTERS[1]}
+            character={CHARACTERS[0]}
           />
         </AppContext.Provider>
       </MemoryRouter>

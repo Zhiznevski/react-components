@@ -1,9 +1,7 @@
-import { AppContextType } from '../../Context/AppContext';
-import { useData } from '../../hooks/useData';
 import Card from '../Card/Card';
-
 import { SetURLSearchParams } from 'react-router-dom';
 import { useGetPersonsQuery } from '../../services/persons';
+import { useAppSelector } from '../../hooks/reduxHooks';
 
 type CardListProps = {
   limit: number;
@@ -16,9 +14,8 @@ const CardList: React.FC<CardListProps> = ({
   page,
   setSearchParams,
 }) => {
-  const { searchValue } = useData() as AppContextType;
+  const searchValue = useAppSelector((state) => state.search.searchValue);
   const { data } = useGetPersonsQuery({ name: searchValue, page: page });
-  console.log(data);
   return (
     <>
       {data?.results?.length ? (

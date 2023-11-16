@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { HOME_ROUTE } from '../../Constants/constants';
 import styles from './SearchBar.module.css';
-import { useData } from '../../hooks/useData';
-import { AppContextType } from '../../Context/AppContext';
+import { addSearchValue } from '../../store/searchSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 
 type Props = {
   searchTerm: string;
@@ -10,15 +10,16 @@ type Props = {
 };
 
 const SearchBar: React.FC<Props> = ({ searchTerm, inputHandler }) => {
-  const { setSearchValue } = useData() as AppContextType;
   const navigate = useNavigate();
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     navigate(HOME_ROUTE);
     event.preventDefault();
-    setSearchValue(searchTerm);
+    dispatch(addSearchValue(searchTerm));
     localStorage.setItem('searchItem_key', JSON.stringify(searchTerm));
   };
-
+  const search = useAppSelector((state) => state.search.searchValue);
+  const dispatch = useAppDispatch();
+  console.log('search', search);
   return (
     <form className={styles.searchForm} onSubmit={submitHandler}>
       <input

@@ -5,14 +5,12 @@ import SearchBar from './Components/SearchBar/SearchBar';
 import Pagination from './Components/Pagination/Pagination';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import DropDown from './Components/DropDown/DropDown';
-import { useData } from './hooks/useData';
 import CardList from './Components/CardList/CardList';
-import { AppContextType } from './Context/AppContext';
 import { useGetPersonsQuery } from './services/persons';
+import { useAppSelector } from './hooks/reduxHooks';
 
 const App: React.FC = () => {
-  const { searchValue } = useData() as AppContextType;
-  const [loading] = useState(false);
+  const searchValue = useAppSelector((state) => state.search.searchValue);
   const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState(searchValue);
   const [limit, setLimit] = useState<number>(20);
@@ -53,18 +51,14 @@ const App: React.FC = () => {
         />
       </div>
       <div className="main-block">
-        {loading ? (
-          <span className="loader"></span>
-        ) : (
-          <div className="cards__wrapper">
-            {details && <div className="hidden" onClick={closeDetails}></div>}
-            <CardList
-              limit={limit}
-              page={page}
-              setSearchParams={setSearchParams}
-            />
-          </div>
-        )}
+        <div className="cards__wrapper">
+          {details && <div className="hidden" onClick={closeDetails}></div>}
+          <CardList
+            limit={limit}
+            page={page}
+            setSearchParams={setSearchParams}
+          />
+        </div>
         {details && <Outlet context={[details, page, setSearchParams]} />}
       </div>
       <Pagination

@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HOME_ROUTE } from '../../Constants/constants';
 import styles from './SearchBar.module.css';
@@ -8,7 +7,6 @@ import { AppContextType } from '../../Context/AppContext';
 type Props = {
   searchTerm: string;
   inputHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  setPageCount: Dispatch<SetStateAction<number | null>>;
 };
 
 const SearchBar: React.FC<Props> = ({ searchTerm, inputHandler }) => {

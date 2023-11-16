@@ -3,6 +3,7 @@ import { useData } from '../../hooks/useData';
 import Card from '../Card/Card';
 
 import { SetURLSearchParams } from 'react-router-dom';
+import { useGetPersonsQuery } from '../../services/persons';
 
 type CardListProps = {
   limit: number;
@@ -15,12 +16,13 @@ const CardList: React.FC<CardListProps> = ({
   page,
   setSearchParams,
 }) => {
-  const { persons } = useData() as AppContextType;
-
+  const { searchValue } = useData() as AppContextType;
+  const { data } = useGetPersonsQuery({ name: searchValue, page: page });
+  console.log(data);
   return (
     <>
-      {persons?.length ? (
-        persons
+      {data?.results?.length ? (
+        data.results
           ?.slice(0, limit)
           .map((person) => (
             <Card

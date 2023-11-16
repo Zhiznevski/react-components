@@ -3,7 +3,7 @@ import styles from './Pagination.module.css';
 import './../../App.css';
 
 type Props = {
-  pageCount: number | null;
+  pageCount: number | undefined;
   setSearchParams: SetURLSearchParams;
   page: string | null;
   details: string | null;

@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import image from './assets/rickMorty.png';
-import { getCharacters } from './api/api';
 import SearchBar from './Components/SearchBar/SearchBar';
 import Pagination from './Components/Pagination/Pagination';
 import { Outlet, useSearchParams } from 'react-router-dom';
@@ -9,18 +8,20 @@ import DropDown from './Components/DropDown/DropDown';
 import { useData } from './hooks/useData';
 import CardList from './Components/CardList/CardList';
 import { AppContextType } from './Context/AppContext';
+import { useGetPersonsQuery } from './services/persons';
 
 const App: React.FC = () => {
-  const { setPersons, searchValue } = useData() as AppContextType;
-  const [loading, setLoading] = useState(false);
+  const { searchValue } = useData() as AppContextType;
+  const [loading] = useState(false);
   const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState(searchValue);
-  const [pageCount, setPageCount] = useState<number | null>(null);
   const [limit, setLimit] = useState<number>(20);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get('page') || '1';
   const details = searchParams.get('details');
+
+  const { data } = useGetPersonsQuery({ name: searchValue, page: page });
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -34,25 +35,6 @@ const App: React.FC = () => {
     setSearchParams({ page: page });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const data = await getCharacters(searchValue, page);
-        if (data) {
-          setPersons(data.results);
-          setLoading(false);
-          if (data.info.pages) {
-            setPageCount(data.info.pages);
-          }
-        }
-      } catch {
-        console.error();
-      }
-    };
-    fetchData();
-  }, [searchValue, page, limit, setPersons]);
-
   if (error) {
     throw new Error('I crashed!');
   }
@@ -62,11 +44,7 @@ const App: React.FC = () => {
         <img className="logo" src={image} alt="logo"></img>
       </div>
       <div className="control-block">
-        <SearchBar
-          setPageCount={setPageCount}
-          inputHandler={inputHandler}
-          searchTerm={searchTerm}
-        />
+        <SearchBar inputHandler={inputHandler} searchTerm={searchTerm} />
         <button onClick={errorHandler}>throw an error</button>
         <DropDown
           limit={limit}
@@ -93,7 +71,7 @@ const App: React.FC = () => {
         page={page}
         details={details}
         setSearchParams={setSearchParams}
-        pageCount={pageCount}
+        pageCount={data?.info.count}
       />
     </div>
   );

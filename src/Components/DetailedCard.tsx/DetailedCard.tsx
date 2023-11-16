@@ -1,32 +1,15 @@
-import { useEffect, useState } from 'react';
-import Person from '../../types/Person';
 import styles from './DetailedCard.module.css';
 import { SetURLSearchParams, useOutletContext } from 'react-router-dom';
 import './../../App.css';
 import icon from './../../assets/close_btn.svg';
-import { getCharacter } from '../../api/api';
+import { useGetPersonQuery } from '../../services/persons';
 
 const DetailedCard: React.FC = () => {
-  const [person, setPerson] = useState<Person | null>(null);
-  const [loading, setLoading] = useState(false);
   const [details, page, setSearchParams]: [string, string, SetURLSearchParams] =
     useOutletContext();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const res = await getCharacter(details);
-        if (res) {
-          setPerson(res);
-          setLoading(false);
-        }
-      } catch {
-        console.error();
-      }
-    };
-    fetchData();
-  }, [details]);
-  if (loading) {
+  const { data, isLoading } = useGetPersonQuery(details);
+
+  if (isLoading) {
     return (
       <div className={styles.loaderWrapper}>
         <div data-testid="loader" className="loader"></div>
@@ -44,42 +27,36 @@ const DetailedCard: React.FC = () => {
         }}
       ></img>
       <div className={styles.imageWrapper}>
-        <img
-          className={styles.image}
-          src={person?.image}
-          alt={person?.name}
-        ></img>
+        <img className={styles.image} src={data?.image} alt={data?.name}></img>
       </div>
       <div className={styles.body}>
-        <h3 className={styles.title}>{person?.name}</h3>
+        <h3 className={styles.title}>{data?.name}</h3>
         <ul className={styles.list}>
           <li className={styles.listItem}>
             <div className={styles.itemTitle}>Gender</div>
-            <div className={styles.itemDescription}>{person?.gender}</div>
+            <div className={styles.itemDescription}>{data?.gender}</div>
           </li>
           <li className={styles.listItem}>
             <div className={styles.itemTitle}>Status</div>
-            <div className={styles.itemDescription}>{person?.status}</div>
+            <div className={styles.itemDescription}>{data?.status}</div>
           </li>
           <li className={styles.listItem}>
             <div className={styles.itemTitle}>Specie</div>
-            <div className={styles.itemDescription}>{person?.species}</div>
+            <div className={styles.itemDescription}>{data?.species}</div>
           </li>
           <li className={styles.listItem}>
             <div className={styles.itemTitle}>Origin</div>
-            <div className={styles.itemDescription}>{person?.origin.name}</div>
+            <div className={styles.itemDescription}>{data?.origin.name}</div>
           </li>
           <li className={styles.listItem}>
             <div className={styles.itemTitle}>Type</div>
             <div className={styles.itemDescription}>
-              {person?.type || 'unknown'}
+              {data?.type || 'unknown'}
             </div>
           </li>
           <li className={styles.listItem}>
             <div className={styles.itemTitle}>Location</div>
-            <div className={styles.itemDescription}>
-              {person?.location.name}
-            </div>
+            <div className={styles.itemDescription}>{data?.location.name}</div>
           </li>
         </ul>
       </div>

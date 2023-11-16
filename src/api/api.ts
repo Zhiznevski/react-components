@@ -1,7 +1,7 @@
 import { API_URL } from '../Constants/constants';
 import Person from '../types/Person';
 
-type Responce = {
+type Response = {
   info: {
     count: number;
     next: string | null;
@@ -14,12 +14,10 @@ export const getCharacters = async (
   searchValue: string,
   page: string | null = '1'
 ) => {
-  const apiURL = searchValue
-    ? `${API_URL}?page=${page}&name=${searchValue}`
-    : `${API_URL}?page=${page}`;
+  const apiURL = `${API_URL}?page=${page}&name=${searchValue}`;
   try {
     const res = await fetch(apiURL);
-    const data: Promise<Responce> = await res.json();
+    const data: Promise<Response> = await res.json();
     return data;
   } catch {
     console.error();

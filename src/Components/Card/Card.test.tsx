@@ -6,6 +6,8 @@ import { CHARACTERS } from '../../mockData/Characters';
 import Card from './Card';
 import App from '../../App';
 import DetailedCard from '../DetailedCard.tsx/DetailedCard';
+import { Provider } from 'react-redux';
+import { store } from '../../store/store';
 
 global.fetch = vi.fn(createFetchResponse) as Mock;
 
@@ -26,13 +28,15 @@ describe('Tests for the Card component', () => {
   it('Renders the relevant card data', () => {
     render(
       <MemoryRouter>
-        <AppContext.Provider value={{ ...providerProps }}>
-          <Card
-            setSearchParams={setSearchParams}
-            page={page}
-            character={CHARACTERS[1]}
-          />
-        </AppContext.Provider>
+        <Provider store={store}>
+          <AppContext.Provider value={{ ...providerProps }}>
+            <Card
+              setSearchParams={setSearchParams}
+              page={page}
+              character={CHARACTERS[1]}
+            />
+          </AppContext.Provider>
+        </Provider>
       </MemoryRouter>
     );
     expect(

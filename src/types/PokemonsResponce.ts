@@ -1,3 +1,5 @@
+import { Pokemon } from './Pokemon';
+
 export type PokemonResponce = {
   data: Pokemon[];
   page: number;

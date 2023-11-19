@@ -3,6 +3,7 @@ import { personApi } from '../services/persons';
 import searchSlice from './searchSlice';
 import cardsLoadingSlice from './cardsLoadingSlice';
 import limitSlice from './limitSlice';
+import detailsLoadingSlice from './detailsLoadingSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,11 +11,10 @@ export const store = configureStore({
     search: searchSlice,
     limit: limitSlice,
     cardsLoading: cardsLoadingSlice,
+    detailsLoading: detailsLoadingSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(personApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-
-export type AppDispatch = typeof store.dispatch;

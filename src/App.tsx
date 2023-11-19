@@ -48,11 +48,7 @@ const App: React.FC = () => {
         <img className="logo" src={image} alt="logo"></img>
       </div>
       <div className="control-block">
-        <SearchBar
-          inputHandler={inputHandler}
-          searchTerm={searchTerm}
-          setSearchParams={setSearchParams}
-        />
+        <SearchBar inputHandler={inputHandler} searchTerm={searchTerm} />
         <button onClick={errorHandler}>throw an error</button>
         <DropDown setSearchParams={setSearchParams} />
       </div>

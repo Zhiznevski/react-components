@@ -9,7 +9,6 @@ type Props = {
 
 const DropDown: React.FC<Props> = ({ setSearchParams }) => {
   const limit = useAppSelector((state) => state.limit.limit);
-  console.log(limit);
   const dispatch = useAppDispatch();
   const limits = [8, 12, 20];
   const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {

@@ -10,7 +10,6 @@ type Props = {
 };
 
 const Pagination: React.FC<Props> = ({ setSearchParams, page, pageCount }) => {
-  console.log(pageCount);
   const numPage = page ? +page : null;
 
   const pageNumbers = [];

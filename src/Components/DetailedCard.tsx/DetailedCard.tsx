@@ -3,13 +3,17 @@ import { SetURLSearchParams, useOutletContext } from 'react-router-dom';
 import './../../App.css';
 import icon from './../../assets/close_btn.svg';
 import { useGetPersonQuery } from '../../services/persons';
+import { useAppSelector } from '../../hooks/reduxHooks';
 
 const DetailedCard: React.FC = () => {
   const [details, page, setSearchParams]: [string, string, SetURLSearchParams] =
     useOutletContext();
-  const { data, isFetching } = useGetPersonQuery(details);
+  const { data } = useGetPersonQuery(details);
+  const isLoading = useAppSelector(
+    (state) => state.detailsLoading.isDetailsLoading
+  );
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className={styles.loaderWrapper}>
         <div data-testid="loader" className="loader"></div>

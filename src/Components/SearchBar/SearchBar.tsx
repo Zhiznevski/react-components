@@ -21,6 +21,7 @@ const SearchBar: React.FC<Props> = ({ searchTerm, inputHandler }) => {
   return (
     <form className={styles.searchForm} onSubmit={submitHandler}>
       <input
+        data-testid="input"
         id="form-input"
         className={styles.searchInput}
         type="search"
@@ -28,7 +29,9 @@ const SearchBar: React.FC<Props> = ({ searchTerm, inputHandler }) => {
         value={searchTerm}
         onChange={inputHandler}
       ></input>
-      <button type="submit">search</button>
+      <button data-testid="submit" type="submit">
+        search
+      </button>
     </form>
   );
 };

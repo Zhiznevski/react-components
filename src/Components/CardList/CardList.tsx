@@ -1,34 +1,35 @@
 import Card from '../Card/Card';
 import { SetURLSearchParams } from 'react-router-dom';
-import { useGetPersonsQuery } from '../../services/persons';
-import { useAppSelector } from '../../hooks/reduxHooks';
+import Loading from '../Loading/Loading';
+import { Pokemon } from '../../types/Pokemon';
 
 type CardListProps = {
-  limit: number;
+  cards: Pokemon[] | undefined;
+  isLoading: boolean;
   page: string;
   setSearchParams: SetURLSearchParams;
 };
 
 const CardList: React.FC<CardListProps> = ({
-  limit,
+  cards,
+  isLoading,
   page,
   setSearchParams,
 }) => {
-  const searchValue = useAppSelector((state) => state.search.searchValue);
-  const { data } = useGetPersonsQuery({ name: searchValue, page: page });
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <>
-      {data?.results?.length ? (
-        data.results
-          ?.slice(0, limit)
-          .map((person) => (
-            <Card
-              character={person}
-              page={page}
-              setSearchParams={setSearchParams}
-              key={person.id}
-            ></Card>
-          ))
+      {cards?.length ? (
+        cards.map((pokemon) => (
+          <Card
+            card={pokemon}
+            page={page}
+            setSearchParams={setSearchParams}
+            key={pokemon.id}
+          ></Card>
+        ))
       ) : (
         <div>No results match your search criteria</div>
       )}

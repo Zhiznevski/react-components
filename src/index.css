@@ -24,6 +24,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  background-image: url('https://unsplash.com/photos/red-and-white-ladybug-toy-on-white-and-yellow-book-dip9IIwUK6w');
 }
 
 a {
@@ -63,11 +64,10 @@ button:hover {
   border-color: #646cff;
 }
 
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button:disabled:hover {
+  border-color: transparent;
+  cursor: default;
 }
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

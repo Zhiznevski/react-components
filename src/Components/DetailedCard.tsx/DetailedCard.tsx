@@ -7,41 +7,47 @@ import { useGetPersonQuery } from '../../services/persons';
 const DetailedCard: React.FC = () => {
   const [details, page, setSearchParams]: [string, string, SetURLSearchParams] =
     useOutletContext();
-  const { data, isLoading } = useGetPersonQuery(details);
+  const { data, isFetching } = useGetPersonQuery(details);
 
-  if (isLoading) {
+  if (isFetching) {
     return (
       <div className={styles.loaderWrapper}>
         <div data-testid="loader" className="loader"></div>
       </div>
     );
-  }
-  return (
-    <div data-testid="details" className={styles.wrapper}>
-      <img
-        src={icon}
-        alt="close-button"
-        className={styles.closeBtn}
-        onClick={() => {
-          setSearchParams({ page: page });
-        }}
-      ></img>
-      <div className={styles.imageWrapper}>
-        <img className={styles.image} src={data?.image} alt={data?.name}></img>
-      </div>
-      <div className={styles.body}>
-        <h3 className={styles.title}>{data?.name}</h3>
-        <ul className={styles.list}>
-          <li className={styles.listItem}>
-            <div className={styles.itemTitle}>Gender</div>
-            <div className={styles.itemDescription}>{data?.gender}</div>
-          </li>
-          <li className={styles.listItem}>
-            <div className={styles.itemTitle}>Status</div>
-            <div className={styles.itemDescription}>{data?.status}</div>
-          </li>
-          <li className={styles.listItem}>
-            <div className={styles.itemTitle}>Specie</div>
+  } else
+    return (
+      <div data-testid="details" className={styles.wrapper}>
+        <img
+          src={icon}
+          alt="close-button"
+          className={styles.closeBtn}
+          onClick={() => {
+            setSearchParams({ page: page });
+          }}
+        ></img>
+        <div className={styles.imageWrapper}>
+          <img
+            className={styles.image}
+            src={data?.data.images.large}
+            alt={data?.data.images.large}
+          ></img>
+        </div>
+        <div className={styles.body}>
+          <h3 className={styles.title}>{data?.data.name}</h3>
+          <ul className={styles.list}>
+            <li className={styles.listItem}>
+              <div className={styles.itemTitle}>Supertype</div>
+              <div className={styles.itemDescription}>
+                {data?.data.supertype}
+              </div>
+            </li>
+            <li className={styles.listItem}>
+              <div className={styles.itemTitle}>HP</div>
+              <div className={styles.itemDescription}>{data?.data.hp}</div>
+            </li>
+            {/* <li className={styles.listItem}>
+            <div className={styles.itemTitle}>rules</div>
             <div className={styles.itemDescription}>{data?.species}</div>
           </li>
           <li className={styles.listItem}>
@@ -57,10 +63,10 @@ const DetailedCard: React.FC = () => {
           <li className={styles.listItem}>
             <div className={styles.itemTitle}>Location</div>
             <div className={styles.itemDescription}>{data?.location.name}</div>
-          </li>
-        </ul>
+          </li> */}
+          </ul>
+        </div>
       </div>
-    </div>
-  );
+    );
 };
 export default DetailedCard;

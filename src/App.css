@@ -23,9 +23,6 @@
   align-self: center;
 }
 
-.logo {
-  width: 50%;
-}
 .control-block {
   display: flex;
   gap: 20px;

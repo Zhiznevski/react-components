@@ -1,15 +1,15 @@
+import { Pokemon } from '../../types/Pokemon';
 import styles from './Card.module.css';
-import Person from '../../types/Person';
 import { SetURLSearchParams } from 'react-router-dom';
 
 type CardProps = {
-  character: Person;
+  card: Pokemon;
   page: string;
   setSearchParams: SetURLSearchParams;
 };
 
-const Card: React.FC<CardProps> = ({ character, page, setSearchParams }) => {
-  const { image, name, gender, id } = character;
+const Card: React.FC<CardProps> = ({ card, page, setSearchParams }) => {
+  const { images, name, supertype, id } = card;
 
   const openDetails = () => {
     setSearchParams((prev) => ({
@@ -25,11 +25,11 @@ const Card: React.FC<CardProps> = ({ character, page, setSearchParams }) => {
       onClick={openDetails}
     >
       <div className={styles.imageWrapper}>
-        <img className={styles.image} src={image} alt={name}></img>
+        <img className={styles.image} src={images.small} alt={name}></img>
       </div>
       <div className={styles.body}>
         <h3 className={styles.title}>{name}</h3>
-        <p className={styles.description}>{gender}</p>
+        <p className={styles.description}>{supertype}</p>
       </div>
     </div>
   );

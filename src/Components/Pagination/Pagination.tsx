@@ -3,40 +3,59 @@ import styles from './Pagination.module.css';
 import './../../App.css';
 
 type Props = {
-  pageCount: number | undefined;
   setSearchParams: SetURLSearchParams;
   page: string | null;
   details: string | null;
+  pageCount: number | undefined;
 };
 
-const Pagination: React.FC<Props> = ({ pageCount, setSearchParams, page }) => {
-  const pageNumbers = [];
+const Pagination: React.FC<Props> = ({ setSearchParams, page, pageCount }) => {
+  console.log(pageCount);
+  const numPage = page ? +page : null;
 
+  const pageNumbers = [];
   if (pageCount) {
-    for (let i = 1; i <= pageCount; i++) {
+    for (let i = 1; i <= +pageCount; i++) {
       pageNumbers.push(i);
     }
   }
+  const getPrevPage = () => {
+    if (numPage) {
+      const newPage = numPage > 1 ? numPage - 1 : numPage;
+      setSearchParams((prev) => ({
+        ...prev,
+        page: newPage,
+      }));
+    }
+  };
+  const getNextPage = () => {
+    if (numPage && pageCount) {
+      const newPage = numPage <= pageCount ? numPage + 1 : numPage;
+      setSearchParams((prev) => ({
+        ...prev,
+        page: newPage,
+      }));
+    }
+  };
+  const isPrevDisabled = () => {
+    if (numPage) {
+      return numPage <= 1;
+    }
+  };
+  const isNextDisabled = () => {
+    if (numPage && pageCount) {
+      return numPage >= pageCount;
+    }
+  };
   return (
-    <ul className={styles.list}>
-      {pageNumbers.slice(0, 10).map((pageNumber) => (
-        <li key={pageNumber}>
-          <div
-            className={
-              page && pageNumber === +page ? styles.active : styles.pageNumber
-            }
-            onClick={() => {
-              setSearchParams((prev) => ({
-                ...prev,
-                page: pageNumber.toString(),
-              }));
-            }}
-          >
-            {pageNumber}
-          </div>
-        </li>
-      ))}
-    </ul>
+    <div className={styles.wrapper}>
+      <button disabled={isPrevDisabled()} onClick={() => getPrevPage()}>
+        prev
+      </button>
+      <button disabled={isNextDisabled()} onClick={() => getNextPage()}>
+        next
+      </button>
+    </div>
   );
 };
 export default Pagination;

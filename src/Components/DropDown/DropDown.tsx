@@ -1,19 +1,21 @@
-import { Dispatch, SetStateAction } from 'react';
 import styles from './DropDown.module.css';
 import { SetURLSearchParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { setLimit } from '../../store/limitSlice';
 
 type Props = {
-  limit: number;
-  setLimit: Dispatch<SetStateAction<number>>;
   setSearchParams: SetURLSearchParams;
 };
 
-const DropDown: React.FC<Props> = ({ limit, setLimit, setSearchParams }) => {
-  const limits = [6, 12, 20];
+const DropDown: React.FC<Props> = ({ setSearchParams }) => {
+  const limit = useAppSelector((state) => state.limit.limit);
+  console.log(limit);
+  const dispatch = useAppDispatch();
+  const limits = [8, 12, 20];
   const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
-    setLimit(+value);
     setSearchParams((prev) => ({ ...prev, page: '1' }));
+    dispatch(setLimit(+value));
   };
   return (
     <div className={styles.wrapper}>

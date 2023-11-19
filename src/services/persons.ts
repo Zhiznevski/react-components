@@ -1,20 +1,24 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import Person from '../types/Person';
-import { PersonsResponse } from '../types/Responce';
+import { PokemonResponce } from '../types/PokemonsResponce';
+import { CardResponse } from '../types/CardPesponse';
 
 type QueryType = {
   name: string;
-  page: string;
+  page: number;
+  pageSize: number;
 };
 export const personApi = createApi({
   reducerPath: 'personApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://rickandmortyapi.com/api/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://api.pokemontcg.io/v2/' }),
   endpoints: (builder) => ({
-    getPersons: builder.query<PersonsResponse, QueryType>({
-      query: ({ name, page }) => `character/?page=${page}&name=${name}`,
+    getPersons: builder.query<PokemonResponce, QueryType>({
+      query: ({ name, page, pageSize }) =>
+        `cards/?page=${page}&pageSize=${pageSize}${
+          name ? `&q=name:${name}` : ''
+        }`,
     }),
-    getPerson: builder.query<Person, string>({
-      query: (id) => `character/${id}`,
+    getPerson: builder.query<CardResponse, string>({
+      query: (id) => `cards/${id}`,
     }),
   }),
 });

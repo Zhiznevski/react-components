@@ -12,12 +12,6 @@ type Props = {
 const Pagination: React.FC<Props> = ({ setSearchParams, page, pageCount }) => {
   const numPage = page ? +page : null;
 
-  const pageNumbers = [];
-  if (pageCount) {
-    for (let i = 1; i <= +pageCount; i++) {
-      pageNumbers.push(i);
-    }
-  }
   const getPrevPage = () => {
     if (numPage) {
       const newPage = numPage > 1 ? numPage - 1 : numPage;
@@ -51,7 +45,11 @@ const Pagination: React.FC<Props> = ({ setSearchParams, page, pageCount }) => {
       <button disabled={isPrevDisabled()} onClick={() => getPrevPage()}>
         prev
       </button>
-      <button disabled={isNextDisabled()} onClick={() => getNextPage()}>
+      <button
+        data-testid="nextBtn"
+        disabled={isNextDisabled()}
+        onClick={() => getNextPage()}
+      >
         next
       </button>
     </div>

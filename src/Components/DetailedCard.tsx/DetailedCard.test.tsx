@@ -1,87 +1,54 @@
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
-import { Mock, describe, expect, it } from 'vitest';
-import { MemoryRouter, Outlet, Route, Routes } from 'react-router-dom';
-import { AppContext } from '../../Context/AppContext';
-import { CHARACTERS } from '../../mockData/Characters';
+import { fireEvent, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import App from '../../App';
 import DetailedCard from '../DetailedCard.tsx/DetailedCard';
-
-global.fetch = vi.fn(createFetchResponse) as Mock;
-
-function createFetchResponse() {
-  return { json: () => new Promise((resolve) => resolve(CHARACTERS[0])) };
-}
-
-const providerProps = {
-  persons: CHARACTERS,
-  setPersons: () => {},
-  searchValue: '',
-  setSearchValue: () => {},
-};
-
-const mockContextValue = ['1', '1', () => {}];
+import { renderWithProviders } from '../../tests/test-utils';
 
 describe('Tests for the DetailedCard component', () => {
   it('Check that a loading indicator is displayed while fetching data', async () => {
-    render(
+    renderWithProviders(
       <MemoryRouter>
-        <AppContext.Provider value={{ ...providerProps }}>
-          <Routes>
-            <Route element={<App />}>
-              <Route path="/" element={<DetailedCard />} />
-            </Route>
-          </Routes>
-          <App />
-        </AppContext.Provider>
+        <Routes>
+          <Route element={<App />}>
+            <Route path="/" element={<DetailedCard />} />
+          </Route>
+        </Routes>
+        <App />
       </MemoryRouter>
     );
     const card = await screen.findAllByTestId('card');
-    act(() => {
-      fireEvent.click(card[0]);
-    });
-
-    waitFor(() => expect(screen.getByTestId('loader')).toBeInTheDocument());
+    fireEvent.click(card[0]);
+    expect(await screen.findByTestId('loader')).toBeInTheDocument();
   });
   it('Make sure the detailed card component correctly displays the detailed card data', async () => {
-    render(
+    renderWithProviders(
       <MemoryRouter>
-        <AppContext.Provider value={{ ...providerProps }}>
-          <Routes>
-            <Route path="/" element={<Outlet context={mockContextValue} />}>
-              <Route index element={<DetailedCard />} />
-            </Route>
-          </Routes>
-        </AppContext.Provider>
+        <Routes>
+          <Route element={<App />}>
+            <Route path="/" element={<DetailedCard />} />
+          </Route>
+        </Routes>
       </MemoryRouter>
     );
-
-    expect(await screen.findByText('Male')).toBeInTheDocument();
-    expect(await screen.findByText('Alive')).toBeInTheDocument();
-    expect(await screen.findByText('Human')).toBeInTheDocument();
-    expect(await screen.findByText('unknown')).toBeInTheDocument();
+    const cards = await screen.findAllByTestId('card');
+    fireEvent.click(cards[0]);
+    expect(await screen.findByText('180')).toBeInTheDocument();
   });
   it('Ensure that clicking the close button hides the component', async () => {
-    render(
+    renderWithProviders(
       <MemoryRouter>
-        <AppContext.Provider value={{ ...providerProps }}>
-          <Routes>
-            <Route path="/" element={<Outlet context={mockContextValue} />}>
-              <Route index element={<DetailedCard />} />
-            </Route>
-          </Routes>
-        </AppContext.Provider>
+        <Routes>
+          <Route element={<App />}>
+            <Route path="/" element={<DetailedCard />} />
+          </Route>
+        </Routes>
       </MemoryRouter>
     );
+    const cards = await screen.findAllByTestId('card');
+    fireEvent.click(cards[0]);
     const closeBtn = await screen.findByAltText('close-button');
-    act(() => {
-      fireEvent.click(closeBtn);
-    });
-    waitFor(() => expect(screen.getByTestId('details')).toBeInTheDocument());
+    fireEvent.click(closeBtn);
+    expect(screen.queryByTestId('details')).not.toBeInTheDocument();
   });
 });

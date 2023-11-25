@@ -6,24 +6,12 @@ import Image from 'next/image';
 import { Pokemon } from '@/types/Pokemon';
 
 type DetailsCardProps = {
-  page: string;
   detailsData: Pokemon | undefined;
 };
 
-const DetailedCard: React.FC<DetailsCardProps> = ({ page, detailsData }) => {
+const DetailedCard: React.FC<DetailsCardProps> = ({ detailsData }) => {
   const router = useRouter();
-  // const { data } = useGetPersonQuery(details);
-  const isLoading = useAppSelector(
-    (state) => state.detailsLoading.isDetailsLoading
-  );
 
-  if (isLoading) {
-    return (
-      <div className={styles.loaderWrapper}>
-        <div data-testid="loader" className="loader"></div>
-      </div>
-    );
-  } else
     return (
       <div data-testid="details" className={styles.wrapper}>
         <Image
@@ -33,14 +21,14 @@ const DetailedCard: React.FC<DetailsCardProps> = ({ page, detailsData }) => {
           width={20}
           height={20}
           onClick={() => {
-            router.push({ query: { page: page } });
+            router.push({ query: {...router.query, details: undefined} });
           }}
         ></Image>
         <div className={styles.imageWrapper}>
           <Image
             priority
             className={styles.image}
-            src={detailsData?.images.large || '.'}
+            src={detailsData?.images.large || ''}
             alt={detailsData?.images.large || 'image'}
             width={300}
             height={500}

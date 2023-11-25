@@ -2,16 +2,15 @@ import styles from './DropDown.module.css';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { setLimit } from '../../store/limitSlice';
 import { useRouter } from 'next/router';
+import { useRef } from 'react';
 
 const DropDown: React.FC = () => {
   const router = useRouter();
-  const limit = useAppSelector((state) => state.limit.limit);
-  const dispatch = useAppDispatch();
+  const limit = router.query.limit || '20'
   const limits = [8, 12, 20];
   const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
-    router.push({ query: { ...router.query, page: '1' } });
-    dispatch(setLimit(+value));
+    router.push({ query: { ...router.query, page: '1', limit: value } });
   };
   return (
     <div className={styles.wrapper}>

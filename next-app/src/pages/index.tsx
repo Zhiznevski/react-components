@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector } from '@/hooks/reduxHooks';
-import { useGetPersonsQuery } from '@/services/persons';
+import { getPersons, getRunningQueriesThunk, useGetPersonsQuery } from '@/services/persons';
 import SearchBar from '@/Components/SearchBar/SearchBar';
 import DropDown from '@/Components/DropDown/DropDown';
 import Pagination from '@/Components/Pagination/Pagination';
@@ -12,45 +12,58 @@ import { useSearchParams } from 'next/navigation';
 import DetailedCard from '@/Components/DetailedCard.tsx/DetailedCard';
 import { useRouter } from 'next/router';
 import Logo from '@/Components/ui/Logo/Logo';
+import { wrapper } from '@/store/store';
 
 const inter = Inter({ subsets: ['latin'] });
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context) => {
+    console.log('search:',context.query.details);
+    const name = context.query?.search;
+
+      store.dispatch(getPersons.initiate({name: '', page: '1', pageSize: '20'}));
+
+
+    await Promise.all(store.dispatch(getRunningQueriesThunk()));
+
+    return {
+      props: {},
+    };
+  }
+);
 
 export default function Home() {
   const router = useRouter();
   console.log('asPath', router.asPath);
-  const isLoading = useAppSelector(
-    (state) => state.cardsLoading.isCardsLoading
-  );
-  const searchValue = useAppSelector((state) => state.search.searchValue);
-  const limit = useAppSelector((state) => state.limit.limit);
-  const [error, setError] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(searchValue);
-  const searchParams = useSearchParams();
-  const page = searchParams.get('page') || '1';
-  const details = searchParams.get('details');
+  const search = router.query.search || '';
+  const page = router.query.page || '1';
+  const details = router.query.details || '';
+  const limit = router.query.limit || '20';
+  // const [error, setError] = useState(false);
+//   useEffect(() => {
+//     router.push({query: {search: search, page: page, details: details, limit: limit}})
+// },[])
   const { data } = useGetPersonsQuery({
-    name: searchValue,
-    page: +page,
+    name: search,
+    page: page,
     pageSize: limit,
   });
   const detailsData =  data?.data.find(element => element.id === details);
   const totalPages = data && Math.round(data.totalCount / data.pageSize);
 
-  const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
 
-  const errorHandler = () => {
-    setError(true);
-  };
+  // const errorHandler = () => {
+  //   setError(true);
+  // };
 
   const closeDetails = () => {
     router.push({query: {page: page}})
   };
 
-  if (error) {
-    throw new Error('I crashed!');
-  }
+  // if (error) {
+  //   throw new Error('I crashed!');
+  // }
+
   return (
     <>
       <Head>
@@ -63,17 +76,17 @@ export default function Home() {
         <div className="app-wrapper">
           <Logo/>
           <div className="control-block">
-            <SearchBar inputHandler={inputHandler} searchTerm={searchTerm} />
-            <button onClick={errorHandler}>throw an error</button>
+            <SearchBar/>
+            {/* <button onClick={errorHandler}>throw an error</button> */}
             <DropDown />
           </div>
-          <Pagination page={page} details={details} pageCount={totalPages} />
+          <Pagination pageCount={totalPages} />
           <div className="main-block">
             <div className="cards__wrapper">
               {details && <div className="hidden" onClick={closeDetails}></div>}
-              <CardList cards={data?.data} isLoading={isLoading}/>
+              <CardList cards={data?.data} isLoading={false}/>
             </div>
-            {details && <DetailedCard page={page} detailsData={detailsData} />}
+            {details && <DetailedCard detailsData={detailsData} />}
           </div>
         </div>
       </main>

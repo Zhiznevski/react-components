@@ -2,15 +2,21 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { PokemonResponce } from '../types/PokemonsResponce';
 import { CardResponse } from '../types/CardPesponse';
 import { API_KEY } from '../Constants/constants';
+import { HYDRATE } from 'next-redux-wrapper';
 
 type QueryType = {
-  name: string;
-  page: number;
-  pageSize: number;
+  name: string | string[]
+  page: string | string[]
+  pageSize: string | string[]
 };
 export const personApi = createApi({
   reducerPath: 'personApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.pokemontcg.io/v2/' }),
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath]
+    }
+  },
   endpoints: (builder) => ({
     getPersons: builder.query<PokemonResponce, QueryType>({
       query: ({ name, page, pageSize }) => ({
@@ -22,6 +28,7 @@ export const personApi = createApi({
         },
       }),
     }),
+    
     getPerson: builder.query<CardResponse, string>({
       query: (id) => ({
         url: `cards/${id}`,
@@ -33,4 +40,6 @@ export const personApi = createApi({
   }),
 });
 
-export const { useGetPersonsQuery, useGetPersonQuery } = personApi;
+export const { useGetPersonsQuery, useGetPersonQuery,   util: { getRunningQueriesThunk }, } = personApi;
+
+export const { getPersons, getPerson } = personApi.endpoints;

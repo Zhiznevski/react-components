@@ -10,10 +10,10 @@ export const store = () =>
   configureStore({
     reducer: {
       [personApi.reducerPath]: personApi.reducer,
-      search: searchSlice,
-      limit: limitSlice,
-      cardsLoading: cardsLoadingSlice,
-      detailsLoading: detailsLoadingSlice,
+      // search: searchSlice,
+      // limit: limitSlice,
+      // cardsLoading: cardsLoadingSlice,
+      // detailsLoading: detailsLoadingSlice,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(personApi.middleware),

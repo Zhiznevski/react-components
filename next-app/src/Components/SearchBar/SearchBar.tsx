@@ -3,31 +3,27 @@ import styles from './SearchBar.module.css';
 import { addSearchValue } from '../../store/searchSlice';
 import { useAppDispatch } from '../../hooks/reduxHooks';
 import { useRouter } from 'next/router';
+import { useRef } from 'react';
 
-type Props = {
-  searchTerm: string;
-  inputHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
-
-const SearchBar: React.FC<Props> = ({ searchTerm, inputHandler }) => {
+const SearchBar: React.FC = () => {
+  const ref = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
-    router.push(HOME_ROUTE);
+    // router.push(HOME_ROUTE);
     event.preventDefault();
-    localStorage.setItem('searchItem_key', JSON.stringify(searchTerm));
-    dispatch(addSearchValue(searchTerm));
+    if (ref.current) {
+    router.push({query: {search: ref.current.value}})
+    }
   };
-  const dispatch = useAppDispatch();
   return (
     <form className={styles.searchForm} onSubmit={submitHandler}>
       <input
+        ref={ref}
         data-testid="input"
         id="form-input"
         className={styles.searchInput}
         type="search"
         placeholder="Search by name"
-        value={searchTerm}
-        onChange={inputHandler}
       ></input>
       <button data-testid="submit" type="submit">
         search

@@ -2,17 +2,10 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import type { PreloadedState } from '@reduxjs/toolkit';
 
 import { personApi } from '../services/persons';
-import detailsLoadingSlice from '../store/DetailsLoadingSlice';
-import cardsLoadingSlice from '../store/cardsLoadingSlice';
-import limitSlice from '../store/limitSlice';
-import searchSlice from '../store/searchSlice';
+
 
 const rootReducer = combineReducers({
   [personApi.reducerPath]: personApi.reducer,
-  search: searchSlice,
-  limit: limitSlice,
-  cardsLoading: cardsLoadingSlice,
-  detailsLoading: detailsLoadingSlice,
 });
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {

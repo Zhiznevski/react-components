@@ -5,16 +5,16 @@ import { API_KEY } from '../Constants/constants';
 import { HYDRATE } from 'next-redux-wrapper';
 
 type QueryType = {
-  name: string | string[]
-  page: string | string[]
-  pageSize: string | string[]
+  name: string | string[];
+  page: string | string[];
+  pageSize: string | string[];
 };
 export const personApi = createApi({
   reducerPath: 'personApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.pokemontcg.io/v2/' }),
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
-      return action.payload[reducerPath]
+      return action.payload[reducerPath];
     }
   },
   endpoints: (builder) => ({
@@ -28,7 +28,7 @@ export const personApi = createApi({
         },
       }),
     }),
-    
+
     getPerson: builder.query<CardResponse, string>({
       query: (id) => ({
         url: `cards/${id}`,
@@ -40,6 +40,10 @@ export const personApi = createApi({
   }),
 });
 
-export const { useGetPersonsQuery, useGetPersonQuery,   util: { getRunningQueriesThunk }, } = personApi;
+export const {
+  useGetPersonsQuery,
+  useGetPersonQuery,
+  util: { getRunningQueriesThunk },
+} = personApi;
 
 export const { getPersons, getPerson } = personApi.endpoints;

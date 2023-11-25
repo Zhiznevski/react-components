@@ -21,7 +21,14 @@ const Card: React.FC<CardProps> = ({ card }) => {
       onClick={openDetails}
     >
       <div className={styles.imageWrapper}>
-        <Image priority className={styles.image} width={220}  height={300} src={images.small} alt={name}></Image>
+        <Image
+          priority
+          className={styles.image}
+          width={220}
+          height={300}
+          src={images.small}
+          alt={name}
+        ></Image>
       </div>
       <div className={styles.body}>
         <h4 className={styles.title}>{name}</h4>

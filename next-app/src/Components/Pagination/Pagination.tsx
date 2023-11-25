@@ -12,7 +12,7 @@ const Pagination: React.FC<Props> = ({ pageCount }) => {
   const getPrevPage = () => {
     if (numPage) {
       const newPage = numPage > 1 ? numPage - 1 : numPage;
-      router.push({ query: {...router.query, page: newPage } });
+      router.push({ query: { ...router.query, page: newPage } });
     }
   };
   const getNextPage = () => {

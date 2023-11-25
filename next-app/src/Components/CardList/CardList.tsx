@@ -7,16 +7,14 @@ type CardListProps = {
   isLoading: boolean;
 };
 
-const CardList: React.FC<CardListProps> = ({ cards, isLoading}) => {
+const CardList: React.FC<CardListProps> = ({ cards, isLoading }) => {
   if (isLoading) {
     return <Loading />;
   }
   return (
     <>
       {cards?.length ? (
-        cards.map((pokemon) => (
-          <Card card={pokemon} key={pokemon.id}></Card>
-        ))
+        cards.map((pokemon) => <Card card={pokemon} key={pokemon.id}></Card>)
       ) : (
         <div>No results match your search criteria</div>
       )}

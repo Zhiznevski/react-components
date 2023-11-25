@@ -1,14 +1,15 @@
 import Head from 'next/head';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
-import { useEffect, useState } from 'react';
-import { useAppSelector } from '@/hooks/reduxHooks';
-import { getPersons, getRunningQueriesThunk, useGetPersonsQuery } from '@/services/persons';
+import {
+  getPersons,
+  getRunningQueriesThunk,
+  useGetPersonsQuery,
+} from '@/services/persons';
 import SearchBar from '@/Components/SearchBar/SearchBar';
 import DropDown from '@/Components/DropDown/DropDown';
 import Pagination from '@/Components/Pagination/Pagination';
 import CardList from '@/Components/CardList/CardList';
-import { useSearchParams } from 'next/navigation';
 import DetailedCard from '@/Components/DetailedCard.tsx/DetailedCard';
 import { useRouter } from 'next/router';
 import Logo from '@/Components/ui/Logo/Logo';
@@ -19,10 +20,10 @@ const inter = Inter({ subsets: ['latin'] });
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
     console.log('search:',context.query.details);
-    const name = context.query?.search;
 
-      store.dispatch(getPersons.initiate({name: '', page: '1', pageSize: '20'}));
-
+    store.dispatch(
+      getPersons.initiate({ name: '', page: '1', pageSize: '20' })
+    );
 
     await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
@@ -40,24 +41,23 @@ export default function Home() {
   const details = router.query.details || '';
   const limit = router.query.limit || '20';
   // const [error, setError] = useState(false);
-//   useEffect(() => {
-//     router.push({query: {search: search, page: page, details: details, limit: limit}})
-// },[])
+  //   useEffect(() => {
+  //     router.push({query: {search: search, page: page, details: details, limit: limit}})
+  // },[])
   const { data } = useGetPersonsQuery({
     name: search,
     page: page,
     pageSize: limit,
   });
-  const detailsData =  data?.data.find(element => element.id === details);
+  const detailsData = data?.data.find((element) => element.id === details);
   const totalPages = data && Math.round(data.totalCount / data.pageSize);
-
 
   // const errorHandler = () => {
   //   setError(true);
   // };
 
   const closeDetails = () => {
-    router.push({query: {page: page}})
+    router.push({ query: { page: page } });
   };
 
   // if (error) {
@@ -74,9 +74,9 @@ export default function Home() {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <div className="app-wrapper">
-          <Logo/>
+          <Logo />
           <div className="control-block">
-            <SearchBar/>
+            <SearchBar />
             {/* <button onClick={errorHandler}>throw an error</button> */}
             <DropDown />
           </div>
@@ -84,7 +84,7 @@ export default function Home() {
           <div className="main-block">
             <div className="cards__wrapper">
               {details && <div className="hidden" onClick={closeDetails}></div>}
-              <CardList cards={data?.data} isLoading={false}/>
+              <CardList cards={data?.data} isLoading={false} />
             </div>
             {details && <DetailedCard detailsData={detailsData} />}
           </div>

@@ -70,8 +70,8 @@
     transition: 0.3s;
   }
   .image {
-     max-width: 150px; 
-     max-height: 250px; 
+    max-width: 150px;
+    max-height: 250px;
   }
   .title {
     font-size: 1rem;

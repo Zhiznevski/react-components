@@ -3,7 +3,7 @@ import img from '../../../assets/pokemon.svg';
 
 const Logo: React.FC = () => {
   return (
-    <div className="main-logo">
+    <div data-testid="logo" className="main-logo">
       <Image
         placeholder="blur"
         blurDataURL={'../assets/pokemon.svg'}

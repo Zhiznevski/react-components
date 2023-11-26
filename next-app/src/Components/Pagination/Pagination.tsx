@@ -7,18 +7,30 @@ type Props = {
 
 const Pagination: React.FC<Props> = ({ pageCount }) => {
   const router = useRouter();
-  const page = router.query.page as string;
+  const page = router.query.page || '1';
   const numPage = page ? +page : null;
   const getPrevPage = () => {
     if (numPage) {
       const newPage = numPage > 1 ? numPage - 1 : numPage;
-      router.push({ query: { ...router.query, page: newPage } });
+      router.push({
+        query: {
+          limit: router.query.limit,
+          search: router.query.search,
+          page: newPage,
+        },
+      });
     }
   };
   const getNextPage = () => {
     if (numPage && pageCount) {
       const newPage = numPage <= pageCount ? numPage + 1 : numPage;
-      router.push({ query: { ...router.query, page: newPage } });
+      router.push({
+        query: {
+          limit: router.query.limit,
+          search: router.query.search,
+          page: newPage,
+        },
+      });
     }
   };
   const isPrevDisabled = () => {

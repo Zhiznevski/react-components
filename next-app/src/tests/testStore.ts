@@ -3,7 +3,6 @@ import type { PreloadedState } from '@reduxjs/toolkit';
 
 import { personApi } from '../services/persons';
 
-
 const rootReducer = combineReducers({
   [personApi.reducerPath]: personApi.reducer,
 });

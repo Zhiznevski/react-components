@@ -1,16 +1,11 @@
 import Card from '../Card/Card';
-import Loading from '../ui/Loading/Loading';
 import { Pokemon } from '../../types/Pokemon';
 
 type CardListProps = {
   cards: Pokemon[] | undefined;
-  isLoading: boolean;
 };
 
-const CardList: React.FC<CardListProps> = ({ cards, isLoading }) => {
-  if (isLoading) {
-    return <Loading />;
-  }
+const CardList: React.FC<CardListProps> = ({ cards }) => {
   return (
     <>
       {cards?.length ? (

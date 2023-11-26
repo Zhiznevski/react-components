@@ -3,12 +3,17 @@ import '@/styles/App.css';
 import type { AppProps } from 'next/app';
 import { wrapper } from '@/store/store';
 import ErrorBoundary from '@/Components/ErrorBoundary/ErrorBoundary';
+import { Provider } from 'react-redux';
 
-export function App({ Component, pageProps }: AppProps) {
+function App({ Component, ...rest }: AppProps) {
+  const { store, props } = wrapper.useWrappedStore(rest);
   return (
-    <ErrorBoundary>
-      <Component {...pageProps} />
-    </ErrorBoundary>
+    <Provider store={store}>
+      <ErrorBoundary>
+        <Component {...props.pageProps} />
+      </ErrorBoundary>
+    </Provider>
   );
 }
-export default wrapper.withRedux(App);
+
+export default App;

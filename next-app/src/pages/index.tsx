@@ -1,29 +1,34 @@
 import Head from 'next/head';
-import { Inter } from 'next/font/google';
-import styles from '@/styles/Home.module.css';
+import styles from '../styles/Home.module.css';
 import {
   getPersons,
+  getPerson,
   getRunningQueriesThunk,
   useGetPersonsQuery,
-} from '@/services/persons';
-import SearchBar from '@/Components/SearchBar/SearchBar';
-import DropDown from '@/Components/DropDown/DropDown';
-import Pagination from '@/Components/Pagination/Pagination';
-import CardList from '@/Components/CardList/CardList';
-import DetailedCard from '@/Components/DetailedCard.tsx/DetailedCard';
+} from '../services/persons';
+import SearchBar from '../Components/SearchBar/SearchBar';
+import DropDown from '../Components/DropDown/DropDown';
+import Pagination from '../Components/Pagination/Pagination';
+import CardList from '../Components/CardList/CardList';
+import DetailedCard from '../Components/DetailedCard.tsx/DetailedCard';
 import { useRouter } from 'next/router';
-import Logo from '@/Components/ui/Logo/Logo';
-import { wrapper } from '@/store/store';
-
-const inter = Inter({ subsets: ['latin'] });
+import Logo from '../Components/ui/Logo/Logo';
+import { wrapper } from '../store/store';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
-    console.log('search:',context.query.details);
-
-    store.dispatch(
-      getPersons.initiate({ name: '', page: '1', pageSize: '20' })
-    );
+    const search = context.query.search || '';
+    const page = context.query.page || '1';
+    const limit = context.query.limit || '20';
+    const details = context.query.details;
+    if (typeof search === 'string') {
+      store.dispatch(
+        getPersons.initiate({ name: search, page: page, pageSize: limit })
+      );
+    }
+    if (typeof details === 'string') {
+      store.dispatch(getPerson.initiate(details));
+    }
 
     await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
@@ -35,34 +40,26 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
 export default function Home() {
   const router = useRouter();
-  console.log('asPath', router.asPath);
   const search = router.query.search || '';
   const page = router.query.page || '1';
-  const details = router.query.details || '';
+  const details = router.query.details;
   const limit = router.query.limit || '20';
-  // const [error, setError] = useState(false);
-  //   useEffect(() => {
-  //     router.push({query: {search: search, page: page, details: details, limit: limit}})
-  // },[])
   const { data } = useGetPersonsQuery({
     name: search,
     page: page,
     pageSize: limit,
   });
-  const detailsData = data?.data.find((element) => element.id === details);
   const totalPages = data && Math.round(data.totalCount / data.pageSize);
 
-  // const errorHandler = () => {
-  //   setError(true);
-  // };
-
-  const closeDetails = () => {
-    router.push({ query: { page: page } });
-  };
-
-  // if (error) {
-  //   throw new Error('I crashed!');
-  // }
+  function closeDetails() {
+    router.push({
+      query: {
+        page: router.query.page,
+        limit: router.query.limit,
+        search: router.query.search,
+      },
+    });
+  }
 
   return (
     <>
@@ -72,21 +69,20 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main} ${inter.className}`}>
+      <main className={`${styles.main}`}>
         <div className="app-wrapper">
           <Logo />
           <div className="control-block">
             <SearchBar />
-            {/* <button onClick={errorHandler}>throw an error</button> */}
             <DropDown />
           </div>
           <Pagination pageCount={totalPages} />
           <div className="main-block">
             <div className="cards__wrapper">
               {details && <div className="hidden" onClick={closeDetails}></div>}
-              <CardList cards={data?.data} isLoading={false} />
+              <CardList cards={data?.data} />
             </div>
-            {details && <DetailedCard detailsData={detailsData} />}
+            {typeof details === 'string' && <DetailedCard details={details} />}
           </div>
         </div>
       </main>

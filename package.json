@@ -13,7 +13,7 @@
     "test:ui": "vitest --ui",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
-    "prepare": "cd .. && husky install next-app/.husky"
+    "prepare": "husky install"
   },
   "type": "module",
   "dependencies": {

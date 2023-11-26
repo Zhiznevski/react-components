@@ -16,10 +16,8 @@ describe('Tests for the Card component', () => {
 
   it('clicking on a card opens a detailed card component', async () => {
     renderWithProviders(<Home />);
-
     const card = await screen.findAllByTestId('card');
     fireEvent.click(card[0]);
-
     const detailsCard = await screen.findAllByTestId('details');
     expect(detailsCard[0]).toBeInTheDocument();
   });

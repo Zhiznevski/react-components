@@ -79,7 +79,9 @@ export default function Home() {
           <Pagination pageCount={totalPages} />
           <div className="main-block">
             <div className="cards__wrapper">
-              {details && <div className="hidden" onClick={closeDetails}></div>}
+              {typeof details === 'string' && (
+                <div className="hidden" onClick={closeDetails}></div>
+              )}
               <CardList cards={data?.data} />
             </div>
             {typeof details === 'string' && <DetailedCard details={details} />}

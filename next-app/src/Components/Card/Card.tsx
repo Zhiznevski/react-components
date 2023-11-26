@@ -11,9 +11,9 @@ const Card: React.FC<CardProps> = ({ card }) => {
   const router = useRouter();
   const { images, name, supertype, id } = card;
 
-  const openDetails = () => {
+  function openDetails() {
     router.push({ query: { ...router.query, details: id } });
-  };
+  }
   return (
     <div
       data-testid="card"

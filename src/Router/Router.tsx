@@ -8,6 +8,7 @@ import Layout from '../components/Layout/Layout';
 import ErrorPage from '../components/ErrorPage/ErrorPage';
 import UncontrolledForm from '../components/UncontrolledForm/UncontrolledForm';
 import HookForm from '../HookForm/HookForm';
+import MainPage from '../components/MainPage/MainPage';
 
 const Router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const Router = createBrowserRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
+      {
+        path: HOME_ROUTE,
+        element: <MainPage />,
+      },
       {
         path: UNCONTROLED_FORM_ROUTE,
         element: <UncontrolledForm />,

@@ -9,21 +9,23 @@ import { FormInputs } from '../types/types';
 import { useAppDispatch } from '../hooks/hooks';
 import { addFormData } from '../store/formSlice';
 import { schema } from '../utils/validation';
+import { toBase64 } from '../utils/toBase64';
 YupPassword(yup);
-
 
 function HookForm() {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>({ resolver: yupResolver(schema), mode: 'onChange' });
 
-  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     console.log(data);
-    dispatch(addFormData(data));
+    const res = (await toBase64(data.image[0])) as string;
+    const storeData = { ...data, image: res };
+    dispatch(addFormData(storeData));
     navigate(HOME_ROUTE);
   };
   console.log('ошибочки', errors);
@@ -46,31 +48,28 @@ function HookForm() {
       <label> confirmPassword</label>
       <input {...register('confirmPassword')} />
       <p>{errors.confirmPassword?.message}</p>
-      <div className='control-block'>
-        <div className='gender-select'>
-      <select {...register("gender")}>
-        <option value="male">male</option>
-        <option value="female">female</option>
-      </select>
+      <div className="control-block">
+        <div className="gender-select">
+          <select {...register('gender')}>
+            <option value="male">male</option>
+            <option value="female">female</option>
+          </select>
         </div>
-        <div className='ts-checkbox'>
-      <div className='ts-block'>
-      <label htmlFor="termsOfService">Agree to Terms and Conditions</label>
+        <div className="ts-checkbox">
+          <div className="ts-block">
+            <label htmlFor="termsOfService">
+              Agree to Terms and Conditions
+            </label>
 
-      <input
-            type='checkbox'
-            {...register('termsOfService')}
-          />
-      </div>
-           <p>{errors.termsOfService?.message}</p>
-
+            <input type="checkbox" {...register('termsOfService')} />
+          </div>
+          <p>{errors.termsOfService?.message}</p>
         </div>
-
       </div>
       <label>Choose a profile picture:</label>
 
-  <input {...register('image')} type="file" />
-  <p>{errors.image?.message}</p>
+      <input {...register('image')} type="file" />
+      <p>{errors.image?.message}</p>
 
       <input disabled={!!Object.keys(errors).length} type="submit" />
     </form>

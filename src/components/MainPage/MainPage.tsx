@@ -1,14 +1,12 @@
-import { useAppSelector } from "../../hooks/hooks";
-import Card from "../Card/Card";
-
+import { useAppSelector } from '../../hooks/hooks';
+import Card from '../Card/Card';
 
 function MainPage() {
-const formData = useAppSelector((state) => state.formData.formData)
-console.log('mainFormData', formData);
+  const formData = useAppSelector((state) => state.formData.formData);
   return (
     <div>
       {formData.map((el, key) => (
-        <Card isLast={key===formData.length - 1} card={el} key={key}/>
+        <Card isLast={key === formData.length - 1} card={el} key={key} />
       ))}
     </div>
   );

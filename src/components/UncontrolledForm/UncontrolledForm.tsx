@@ -1,13 +1,19 @@
 import { useRef, useState } from 'react';
 import { schema } from '../../utils/validation';
 import { ValidationError } from 'yup';
+import { useNavigate } from 'react-router-dom';
+import { StateInputs, addFormData } from '../../store/formSlice';
+import { toBase64 } from '../../utils/toBase64';
+import { HOME_ROUTE } from '../../constants/constants';
+import { useAppDispatch } from '../../hooks/hooks';
 
 type ErrorObject = Record<string, { message: string }>;
 
 function UncontrolledForm() {
   const [errors, setErrors] = useState<ErrorObject>();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  console.log(errors);
   const name = useRef<HTMLInputElement>(null);
   const age = useRef<HTMLInputElement>(null);
   const email = useRef<HTMLInputElement>(null);
@@ -27,16 +33,17 @@ function UncontrolledForm() {
       confirmPassword: confirmPassword.current?.value,
       gender: gender.current?.value,
       termsOfService: termsOfService.current?.checked,
-      image: image.current?.files
+      image: image.current?.files,
     };
-    console.log('картиночка', formData.image);
     try {
       await schema.validate(formData, { abortEarly: false });
-      // navigate(HOME_ROUTE);
+      const images = formData.image as FileList;
+      const str = await toBase64(images[0]);
+      const storeData = { ...formData, image: str } as unknown as StateInputs;
+      dispatch(addFormData(storeData));
+      navigate(HOME_ROUTE);
     } catch (err) {
       if (err instanceof ValidationError) {
-        console.log('inner', err.inner);
-
         const errs: ErrorObject = {};
         err.inner.forEach((e) => {
           if (e.path) errs[e.path] = { message: e.message };
@@ -64,32 +71,28 @@ function UncontrolledForm() {
       <label> confirmPassword</label>
       <input type="text" ref={confirmPassword} />
       <p>{errors?.confirmPassword?.message}</p>
-      <div className='control-block'>
-        <div className='gender-select'>
-      <select ref={gender}>
-        <option value="male">male</option>
-        <option value="female">female</option>
-      </select>
+      <div className="control-block">
+        <div className="gender-select">
+          <select ref={gender}>
+            <option value="male">male</option>
+            <option value="female">female</option>
+          </select>
         </div>
-        <div className='ts-checkbox'>
-      <div className='ts-block'>
-      <label htmlFor="termsOfService">Agree to Terms and Conditions</label>
+        <div className="ts-checkbox">
+          <div className="ts-block">
+            <label htmlFor="termsOfService">
+              Agree to Terms and Conditions
+            </label>
 
-      <input  
-            name='termsOfService'
-            type='checkbox'
-           ref={termsOfService}
-          />
-      </div>
-           <p>{errors?.termsOfService?.message}</p>
-
+            <input name="termsOfService" type="checkbox" ref={termsOfService} />
+          </div>
+          <p>{errors?.termsOfService?.message}</p>
         </div>
-
       </div>
       <label>Choose a profile picture:</label>
 
-<input ref={image}  type="file" />
-<p>{errors?.image?.message}</p>
+      <input ref={image} type="file" />
+      <p>{errors?.image?.message}</p>
       <input type="submit" />
     </form>
   );

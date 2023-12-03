@@ -1,4 +1,3 @@
-
 export type FormInputs = {
   name: string;
   age: number;

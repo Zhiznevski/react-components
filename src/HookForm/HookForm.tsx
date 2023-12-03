@@ -8,27 +8,9 @@ import YupPassword from 'yup-password';
 import { FormInputs } from '../types/types';
 import { useAppDispatch } from '../hooks/hooks';
 import { addFormData } from '../store/formSlice';
+import { schema } from '../utils/validation';
 YupPassword(yup);
 
-const schema = yup.object().shape({
-  name: yup
-    .string()
-    .matches(/^[A-Z]/, 'Name must have first uppercased letter')
-    .required(),
-  age: yup.number().required().positive().integer(),
-  email: yup.string().email().required(),
-  password: yup
-    .string()
-    .password()
-    .minNumbers(1, 'Password must have at least 1 digit')
-    .minLowercase(1, 'Password must have at least 1 lowercase')
-    .minUppercase(1, 'Password must have at least 1 uppercase')
-    .required('Enter a password'),
-  confirmPassword: yup
-    .string()
-    .required('Retype your password')
-    .oneOf([yup.ref('password')], 'Passwords does not match'),
-});
 
 function HookForm() {
   const navigate = useNavigate();
@@ -64,6 +46,28 @@ function HookForm() {
       <label> confirmPassword</label>
       <input {...register('confirmPassword')} />
       <p>{errors.confirmPassword?.message}</p>
+      <div className='control-block'>
+        <div className='gender-select'>
+      <select {...register("gender")}>
+        <option value="male">male</option>
+        <option value="female">female</option>
+      </select>
+        </div>
+        <div className='ts-checkbox'>
+      <div className='ts-block'>
+      <label htmlFor="termsOfService">Agree to Terms and Conditions</label>
+
+      <input
+            type='checkbox'
+            {...register('termsOfService')}
+          />
+      </div>
+           <p>{errors.termsOfService?.message}</p>
+
+        </div>
+
+      </div>
+    
 
       <input disabled={!!Object.keys(errors).length} type="submit" />
     </form>

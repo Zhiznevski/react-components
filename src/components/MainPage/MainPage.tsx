@@ -8,7 +8,7 @@ console.log('mainFormData', formData);
   return (
     <div>
       {formData.map((el, key) => (
-        <Card card={el} key={key}/>
+        <Card isLast={key===formData.length - 1} card={el} key={key}/>
       ))}
     </div>
   );

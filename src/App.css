@@ -78,6 +78,14 @@ input {
   border: 1px solid #ddd;
   border-radius: 5px;
 }
+input[type='checkbox'] {
+
+  min-width: 40px;
+  padding: 0;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
 
 input[type='submit'] {
   margin-top: 20px;
@@ -95,4 +103,42 @@ p {
   min-height: 25px;
   color: rgb(234, 30, 30);
   margin-top: 5px;
+}
+
+.control-block {
+  display: flex;
+  justify-content: space-between;
+}
+
+.control-block select {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-family: inherit;
+
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.control-block option {
+    transition: border-color 0.25s;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+  
+    font-family: inherit;
+    margin-bottom: 10px;
+}
+
+.ts-checkbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ts-block {
+  display: flex;
+  align-items: center;
 }

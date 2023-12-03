@@ -1,14 +1,15 @@
 import { FormInputs } from '../../types/types';
 import styles from './Card.module.css';
 type CardProps = {
-    card: FormInputs
+    card: FormInputs,
+    isLast: boolean
 }
   
-  const Card: React.FC<CardProps> = ({ card  }) => {
+  const Card: React.FC<CardProps> = ({ card, isLast  }) => {
  const {name, age, email, password, confirmPassword} = card
     return (
-      <div
-        className={`${styles.wrapper} card`}
+      <div style={{border: isLast ? '2px solid #646cff': 'none'}}
+        className={`${styles.wrapper} card `}
 
       >
         <div className={styles.imageWrapper}>

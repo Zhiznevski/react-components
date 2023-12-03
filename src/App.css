@@ -1,0 +1,143 @@
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+form {
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 15px;
+}
+.input-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+label {
+  margin-bottom: 5px;
+}
+.input-field {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+  margin-top: 20px;
+}
+
+.input-field input {
+  margin-top: 5px;
+}
+
+input {
+  height: 35px;
+  min-width: 600px;
+  padding: 5px 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+input[type='checkbox'] {
+  min-width: 40px;
+  padding: 0;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+input[type='submit'] {
+  margin-top: 20px;
+  background-color: #21ae14;
+  color: white;
+  cursor: pointer;
+  border: none;
+}
+
+input[type='submit']:hover {
+  background-color: #1c7d29;
+}
+
+p {
+  min-height: 25px;
+  color: rgb(234, 30, 30);
+  margin-top: 5px;
+}
+
+.control-block {
+  display: flex;
+  justify-content: space-between;
+}
+
+.control-block select {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-family: inherit;
+
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.control-block option {
+  transition: border-color 0.25s;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+
+  font-family: inherit;
+  margin-bottom: 10px;
+}
+
+.ts-checkbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ts-block {
+  display: flex;
+  align-items: center;
+}

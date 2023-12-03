@@ -4,13 +4,13 @@ import {
   REACT_HOOK_FORM_ROUTE,
   UNCONTROLED_FORM_ROUTE,
 } from '../../constants/constants';
-import styles from './Header.module.css';
+import './Header.css';
 
 function Header() {
   return (
     <header>
       <nav>
-        <ul className={styles.list}>
+        <ul className="list">
           <li>
             <NavLink to={HOME_ROUTE}>Home</NavLink>
           </li>

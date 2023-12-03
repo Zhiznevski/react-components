@@ -15,6 +15,7 @@ function UncontrolledForm() {
   const confirmPassword = useRef<HTMLInputElement>(null);
   const gender = useRef<HTMLSelectElement>(null);
   const termsOfService = useRef<HTMLInputElement>(null);
+  const image = useRef<HTMLInputElement>(null);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,9 +26,10 @@ function UncontrolledForm() {
       password: password.current?.value,
       confirmPassword: confirmPassword.current?.value,
       gender: gender.current?.value,
-      termsOfService: termsOfService.current?.checked
+      termsOfService: termsOfService.current?.checked,
+      image: image.current?.files
     };
-    console.log(formData.termsOfService);
+    console.log('картиночка', formData.image);
     try {
       await schema.validate(formData, { abortEarly: false });
       // navigate(HOME_ROUTE);
@@ -84,6 +86,10 @@ function UncontrolledForm() {
         </div>
 
       </div>
+      <label>Choose a profile picture:</label>
+
+<input ref={image}  type="file" />
+<p>{errors?.image?.message}</p>
       <input type="submit" />
     </form>
   );

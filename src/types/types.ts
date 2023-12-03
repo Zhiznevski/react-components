@@ -7,4 +7,5 @@ export type FormInputs = {
   confirmPassword: string;
   gender: string;
   termsOfService: NonNullable<boolean | undefined>;
+  image: FileList;
 };

@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import YupPassword from 'yup-password';
 YupPassword(yup);
 
+const MAX_IMAGE_SIZE = 3145728;
 
 export const schema = yup.object().shape({
   name: yup
@@ -23,4 +24,18 @@ export const schema = yup.object().shape({
     .oneOf([yup.ref('password')], 'Passwords does not match'),
   gender: yup.string().matches(/["male"]/).required(),
   termsOfService: yup.boolean().oneOf([true], "must be accept").required(),
+  image: yup
+    .mixed<FileList>()
+    .required("upload image")
+    .transform(value => (value[0] ? value : undefined))
+    .test(
+      'fileSize',
+      'File Size is too large',
+      (value) => value && value[0]?.size <= MAX_IMAGE_SIZE
+    )
+    .test(
+      'fileType',
+      'Unsupported File Format',
+      (value) => ( ['image/png', 'image/jpeg'].includes(value[0]?.type))
+    )
 });

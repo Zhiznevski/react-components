@@ -67,7 +67,10 @@ function HookForm() {
         </div>
 
       </div>
-    
+      <label>Choose a profile picture:</label>
+
+  <input {...register('image')} type="file" />
+  <p>{errors.image?.message}</p>
 
       <input disabled={!!Object.keys(errors).length} type="submit" />
     </form>

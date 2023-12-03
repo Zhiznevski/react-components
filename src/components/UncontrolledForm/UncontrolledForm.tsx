@@ -6,6 +6,7 @@ import { StateInputs, addFormData } from '../../store/formSlice';
 import { toBase64 } from '../../utils/toBase64';
 import { HOME_ROUTE } from '../../constants/constants';
 import { useAppDispatch } from '../../hooks/hooks';
+import { COUNTRIES } from '../../constants/countries';
 
 type ErrorObject = Record<string, { message: string }>;
 
@@ -22,6 +23,7 @@ function UncontrolledForm() {
   const gender = useRef<HTMLSelectElement>(null);
   const termsOfService = useRef<HTMLInputElement>(null);
   const image = useRef<HTMLInputElement>(null);
+  const country = useRef<HTMLInputElement>(null);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,6 +36,7 @@ function UncontrolledForm() {
       gender: gender.current?.value,
       termsOfService: termsOfService.current?.checked,
       image: image.current?.files,
+      country: country.current?.value,
     };
     try {
       await schema.validate(formData, { abortEarly: false });
@@ -93,6 +96,14 @@ function UncontrolledForm() {
 
       <input ref={image} type="file" />
       <p>{errors?.image?.message}</p>
+      <label htmlFor="country-choice">Choose a country:</label>
+      <input ref={country} type="text" list="countries" id='country-choice' />
+      <p>{errors?.country?.message}</p>
+
+<datalist id="countries">
+  {COUNTRIES.map(el => (<option key={el} value={el}></option>))}
+</datalist>
+
       <input type="submit" />
     </form>
   );

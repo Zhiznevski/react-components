@@ -10,6 +10,7 @@ import { useAppDispatch } from '../hooks/hooks';
 import { addFormData } from '../store/formSlice';
 import { schema } from '../utils/validation';
 import { toBase64 } from '../utils/toBase64';
+import { COUNTRIES } from '../constants/countries';
 YupPassword(yup);
 
 function HookForm() {
@@ -71,7 +72,16 @@ function HookForm() {
       <input {...register('image')} type="file" />
       <p>{errors.image?.message}</p>
 
+      <label htmlFor="country-choice">Choose a country:</label>
+      <input {...register('country')} type="text" list="countries" id='country-choice' />
+      <p>{errors.country?.message}</p>
+
+<datalist id="countries">
+  {COUNTRIES.map(el => (<option key={el} value={el}></option>))}
+</datalist>
+
       <input disabled={!!Object.keys(errors).length} type="submit" />
+
     </form>
   );
 }

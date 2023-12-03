@@ -9,6 +9,7 @@ export type StateInputs = {
   gender: string;
   termsOfService: NonNullable<boolean | undefined>;
   image: string;
+  country: string;
 };
 
 const initialState: StateInputs[] = [];

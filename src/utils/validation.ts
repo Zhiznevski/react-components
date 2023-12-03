@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import YupPassword from 'yup-password';
+import { COUNTRIES } from '../constants/countries';
 YupPassword(yup);
 
 const MAX_IMAGE_SIZE = 3145728;
@@ -39,4 +40,6 @@ export const schema = yup.object().shape({
     .test('fileType', 'Unsupported File Format', (value) =>
       ['image/png', 'image/jpeg'].includes(value[0]?.type)
     ),
+    country: yup.string().required("Enter your country")
+    .oneOf(COUNTRIES, 'Must be valid country'),
 });

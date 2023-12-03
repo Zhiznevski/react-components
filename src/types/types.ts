@@ -7,4 +7,5 @@ export type FormInputs = {
   gender: string;
   termsOfService: NonNullable<boolean | undefined>;
   image: FileList;
+  country: string;
 };

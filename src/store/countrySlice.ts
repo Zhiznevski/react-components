@@ -1,7 +1,7 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { COUNTRIES } from "../constants/countries";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { COUNTRIES } from '../constants/countries';
 
-const initialState  = COUNTRIES;
+const initialState = COUNTRIES;
 
 const countrySlice = createSlice({
   name: 'countryData',

@@ -72,7 +72,13 @@ function UncontrolledForm() {
       <label>Password</label>
       <input type="text" ref={password} />
       <p>{errors?.password?.message}</p>
-      {password.current?.value ? <p style={{color:'black'}}>{`password strength: ${checkPasswordStrength(password.current.value)}`}</p> : null}
+      {password.current?.value ? (
+        <p
+          style={{ color: 'black' }}
+        >{`password strength: ${checkPasswordStrength(
+          password.current.value
+        )}`}</p>
+      ) : null}
       <label> confirmPassword</label>
       <input type="text" ref={confirmPassword} />
       <p>{errors?.confirmPassword?.message}</p>
@@ -99,12 +105,14 @@ function UncontrolledForm() {
       <input ref={image} type="file" />
       <p>{errors?.image?.message}</p>
       <label htmlFor="country-choice">Choose a country:</label>
-      <input ref={country} type="text" list="countries" id='country-choice' />
+      <input ref={country} type="text" list="countries" id="country-choice" />
       <p>{errors?.country?.message}</p>
 
-<datalist id="countries">
-  {COUNTRIES.map(el => (<option key={el} value={el}></option>))}
-</datalist>
+      <datalist id="countries">
+        {COUNTRIES.map((el) => (
+          <option key={el} value={el}></option>
+        ))}
+      </datalist>
 
       <input type="submit" />
     </form>

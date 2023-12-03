@@ -23,7 +23,6 @@ function HookForm() {
     watch,
     formState: { errors },
   } = useForm<FormInputs>({ resolver: yupResolver(schema), mode: 'onChange' });
-;
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     const res = (await toBase64(data.image[0])) as string;
     const storeData = { ...data, image: res };
@@ -46,7 +45,11 @@ function HookForm() {
       <label>Password</label>
       <input {...register('password')} />
       <p>{errors.password?.message}</p>
-  {watch("password") ? <p style={{color:'black'}}>{`password strength: ${checkPasswordStrength(watch("password"))}`}</p> : null}
+      {watch('password') ? (
+        <p
+          style={{ color: 'black' }}
+        >{`password strength: ${checkPasswordStrength(watch('password'))}`}</p>
+      ) : null}
       <label> confirmPassword</label>
       <input {...register('confirmPassword')} />
       <p>{errors.confirmPassword?.message}</p>
@@ -74,15 +77,21 @@ function HookForm() {
       <p>{errors.image?.message}</p>
 
       <label htmlFor="country-choice">Choose a country:</label>
-      <input {...register('country')} type="text" list="countries" id='country-choice' />
+      <input
+        {...register('country')}
+        type="text"
+        list="countries"
+        id="country-choice"
+      />
       <p>{errors.country?.message}</p>
 
-<datalist id="countries">
-  {COUNTRIES.map(el => (<option key={el} value={el}></option>))}
-</datalist>
+      <datalist id="countries">
+        {COUNTRIES.map((el) => (
+          <option key={el} value={el}></option>
+        ))}
+      </datalist>
 
       <input disabled={!!Object.keys(errors).length} type="submit" />
-
     </form>
   );
 }

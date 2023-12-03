@@ -11,6 +11,7 @@ import { addFormData } from '../store/formSlice';
 import { schema } from '../utils/validation';
 import { toBase64 } from '../utils/toBase64';
 import { COUNTRIES } from '../constants/countries';
+import { checkPasswordStrength } from '../utils/checkPasswordStrength';
 YupPassword(yup);
 
 function HookForm() {
@@ -19,17 +20,16 @@ function HookForm() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormInputs>({ resolver: yupResolver(schema), mode: 'onChange' });
-
+;
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    console.log(data);
     const res = (await toBase64(data.image[0])) as string;
     const storeData = { ...data, image: res };
     dispatch(addFormData(storeData));
     navigate(HOME_ROUTE);
   };
-  console.log('ошибочки', errors);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>Name</label>
@@ -46,6 +46,7 @@ function HookForm() {
       <label>Password</label>
       <input {...register('password')} />
       <p>{errors.password?.message}</p>
+  {watch("password") ? <p style={{color:'black'}}>{`password strength: ${checkPasswordStrength(watch("password"))}`}</p> : null}
       <label> confirmPassword</label>
       <input {...register('confirmPassword')} />
       <p>{errors.confirmPassword?.message}</p>

@@ -7,6 +7,7 @@ import { toBase64 } from '../../utils/toBase64';
 import { HOME_ROUTE } from '../../constants/constants';
 import { useAppDispatch } from '../../hooks/hooks';
 import { COUNTRIES } from '../../constants/countries';
+import { checkPasswordStrength } from '../../utils/checkPasswordStrength';
 
 type ErrorObject = Record<string, { message: string }>;
 
@@ -71,6 +72,7 @@ function UncontrolledForm() {
       <label>Password</label>
       <input type="text" ref={password} />
       <p>{errors?.password?.message}</p>
+      {password.current?.value ? <p style={{color:'black'}}>{`password strength: ${checkPasswordStrength(password.current.value)}`}</p> : null}
       <label> confirmPassword</label>
       <input type="text" ref={confirmPassword} />
       <p>{errors?.confirmPassword?.message}</p>

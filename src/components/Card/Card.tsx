@@ -7,7 +7,7 @@ type CardProps = {
 };
 
 const Card: React.FC<CardProps> = ({ card, isLast }) => {
-  const { name, age, email, password, image, country } = card;
+  const { name, age, email, password, image, country, gender } = card;
   return (
     <div
       style={{ border: isLast ? '2px solid #646cff' : 'none' }}
@@ -26,6 +26,10 @@ const Card: React.FC<CardProps> = ({ card, isLast }) => {
           <li className={styles.listItem}>
             <div className={styles.itemTitle}>Age</div>
             <div className={styles.itemDescription}>{age}</div>
+          </li>
+          <li className={styles.listItem}>
+            <div className={styles.itemTitle}>Gender</div>
+            <div className={styles.itemDescription}>{gender}</div>
           </li>
           <li className={styles.listItem}>
             <div className={styles.itemTitle}>Email</div>
